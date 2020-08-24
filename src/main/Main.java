@@ -13,40 +13,14 @@ import javax.swing.border.EmptyBorder;
 public class Main extends JFrame {
 
 	 public Main() {
-	  setTitle("Swee Library");
-	  setSize(600, 400);
-	  setLocationRelativeTo(null);
-	  setDefaultCloseOperation(EXIT_ON_CLOSE);
+		 FirstMenuView mainMenu = new FirstMenuView();
 	  
-	  JLabel lblTitle;
-	  JButton btnLogIn, btnCreateMember;
-	  
-	  lblTitle = new JLabel("Swee Library", JLabel.CENTER);
-	  lblTitle.setFont(new Font("Times New Roman", Font.BOLD, 80));
-	  lblTitle.setPreferredSize(new Dimension(200, 150));
-	  
-	  btnLogIn = new JButton("Log In");
-	  btnLogIn.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-	  btnCreateMember = new JButton("Create Membership");
-	  btnCreateMember.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-	  
-	  JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 15, 15));
-	  buttonPanel.add(btnLogIn);
-	  buttonPanel.add(btnCreateMember);
-	  buttonPanel.setBorder(new EmptyBorder(50, 150, 50, 150));
-
-	  JPanel mainPanel = new JPanel(new BorderLayout(5, 5));
-	  mainPanel.add(lblTitle, BorderLayout.NORTH);
-	  mainPanel.add(buttonPanel, BorderLayout.CENTER);
-	  
-	  add(mainPanel);
-	  
-	  setVisible(true);
+		 mainMenu.setVisible(true);
 	 }
 	 
 	 public static void main(String[] args) {
 	  // TODO Auto-generated method stub
-	  new Main();
+		 new Main();
 	 }
 
-	}
+}
