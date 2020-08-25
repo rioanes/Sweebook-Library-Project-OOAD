@@ -14,7 +14,7 @@ public class Main extends JFrame {
 
 	 public Main() {
 		 FirstMenuView mainMenu = new FirstMenuView();
-	  
+		 
 		 mainMenu.setVisible(true);
 	 }
 	 
