@@ -1,5 +1,6 @@
 package main;
 import java.awt.BorderLayout;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -10,12 +11,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import view.*;
+
 public class Main extends JFrame {
 
 	 public Main() {
-		 FirstMenuView mainMenu = new FirstMenuView();
-	  
-		 mainMenu.setVisible(true);
+		// FirstMenuView mainMenu = new FirstMenuView();
+		 CreateMembershipForm createMember = new CreateMembershipForm();
+		 
+		// mainMenu.setVisible(true);
+		 createMember.setVisible(true);
 	 }
 	 
 	 public static void main(String[] args) {
