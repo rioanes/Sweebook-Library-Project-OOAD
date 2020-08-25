@@ -85,7 +85,7 @@ public class CreateMembershipForm extends JFrame{
 		create.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		create.setSize(20, 20);
 		
-		txtAddress.setPreferredSize(new Dimension(4000,150));
+		//txtAddress.setPreferredSize(new Dimension(400,150));
 		
 		JPanel pnlGender = new JPanel(new GridLayout(1,2));
 		pnlGender.add(rbMale);
