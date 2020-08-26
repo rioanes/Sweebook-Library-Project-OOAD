@@ -1,5 +1,4 @@
 package main;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -41,5 +40,8 @@ public class FirstMenuView extends JFrame{
 		  mainPanel.add(buttonPanel, BorderLayout.CENTER);
 		  
 		  add(mainPanel);
+		  
+		  setVisible(true);
 	}
+	
 }
