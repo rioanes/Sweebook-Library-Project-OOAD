@@ -17,8 +17,8 @@ public class Member {
 	private String address;
 	private String memberSince;
 	
-	final String insertString = "INSERT INTO member (id,address,memberSince) VALUES (?, ?, ?);";
-	final String selectString = "SELECT * FROM member ORDER BY id DESC;";
+	final String insertString = "INSERT INTO members (user_id,address,member_since) VALUES (?, ?, ?);";
+	final String selectString = "SELECT * FROM members ORDER BY user_id DESC;";
 	
 	public Member() {
 		super();
@@ -59,9 +59,9 @@ public class Member {
 			ResultSet rs = st.executeQuery(selectString);
 			while(rs.next()) {
 				Member member = new Member();
-				member.setId(rs.getString("id"));
-				member.setAddress(rs.getString("address"));
-				member.setMemberSince(rs.getString("memberSince"));
+				member.setId(rs.getString(1));
+				member.setAddress(rs.getString(2));
+				member.setMemberSince(rs.getString(3));
 				
 				
 				members.add(member);

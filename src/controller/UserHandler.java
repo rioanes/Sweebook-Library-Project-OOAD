@@ -5,7 +5,15 @@ import model.*;
 
 public class UserHandler {
 	public User insert(HashMap<String, String> inputs) {
+		User user = new User();
+		user.setId(inputs.get("id"));
+		user.setRoleId(inputs.get("roleId"));
+		user.setName(inputs.get("name"));
+		user.setUsername(inputs.get("username"));
+		user.setPassword(inputs.get("password"));
+		user.setGender(inputs.get("gender"));
 		
+		return user.insert();
 	}
 	
 	public User getByUsername(String username) {

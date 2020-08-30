@@ -73,14 +73,14 @@ public class ManagerMainView extends JFrame implements ActionListener {
 	public JInternalFrame showViewMembershipForm() {
 		remove(photo);
 		viewMemForm = new ViewMembershipForm();
-		add(viewMemForm).setSize(340, 335);
+		add(viewMemForm).setSize(340,335);
 		return viewMemForm;
 	}
 	
 	public JInternalFrame showManageEmployeeForm() {
 		remove(photo);
 		manEmpForm = new ManageEmployeeForm();
-		add(manEmpForm).setSize(340, 335);
+		add(manEmpForm).setSize(700, 400);
 		return manEmpForm;
 	}
 	

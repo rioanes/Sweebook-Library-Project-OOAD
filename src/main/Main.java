@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import model.*;
+import view.CreateMembershipForm;
 import view.LogInView;
 import view.ManagerMainView;
 import view.MemberMainView;
@@ -26,9 +27,14 @@ public class Main extends JFrame {
 //		 
 //		 FirstMenuView fmv = new FirstMenuView();
 //		 fmv.setVisible(true);
+//		 
+//		 LogInView login = new LogInView();
+//		 login.setVisible(true);
+//		 
+		 CreateMembershipForm cmf = new CreateMembershipForm();
+		 cmf.setVisible(true);
 		 
-		 LogInView login = new LogInView();
-		 login.setVisible(true);
+		 
 	 }
 	 
 	 public static void main(String[] args) {

@@ -18,7 +18,7 @@ public class User {
 	private String password;
 	private String gender;
 	
-	final String insertString = "INSERT INTO users (id,roleId, name, username, password, gender) VALUES (?, ?, ?, ?, ?, ?);";
+	final String insertString = "INSERT INTO users (id,role_id, name, username, password, gender) VALUES (?, ?, ?, ?, ?, ?);";
 	final String findIdString = "SELECT * FROM users WHERE username=? ;";
 	
 	public User() {
