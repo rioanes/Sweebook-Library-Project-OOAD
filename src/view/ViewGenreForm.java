@@ -20,10 +20,10 @@ import javax.swing.JOptionPane;
 
 import model.Book;
 
-public class ManageGenreForm extends JInternalFrame implements ActionListener {
+public class ViewGenreForm extends JInternalFrame implements ActionListener {
  
 	 List<Book> genreList = new ArrayList<Book>();
-	 PurchasingMainView purchasingMain;
+	 MemberMainView viewGenre;
 	 
 	 JTable tbl;
 	 JScrollPane sPane;
@@ -35,7 +35,7 @@ public class ManageGenreForm extends JInternalFrame implements ActionListener {
 	 JTextField txtType;
 	 JPanel jp;
 	 
-	 public ManageGenreForm() {
+	 public ViewGenreForm() {
 		 setVisible(true);
 		 setSize(340, 335);
 		 setLocation(225, 10);
@@ -60,22 +60,11 @@ public class ManageGenreForm extends JInternalFrame implements ActionListener {
 		 public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				new JOptionPane().showInputDialog(null, "Insert Type");
-				
 			}
 		 });
-		 
-		 tit = new JLabel("Create Type");
-		 tit1 = new JLabel("");
-		 lblType = new JLabel("Type Name");
-		 txtType = new JTextField();
-		 jp = new JPanel(new GridLayout(2,2));
-		 
-		 JPanel pnl = new JPanel(new BorderLayout());
-		 pnl.add(new JScrollPane(table), BorderLayout.CENTER);
-		 pnl.add(jp, BorderLayout.SOUTH);
-		 
+
 		 getContentPane().add(titlePnl, BorderLayout.NORTH);
-		 getContentPane().add(pnl, BorderLayout.CENTER);
+		 getContentPane().add(new JScrollPane(table), BorderLayout.CENTER);
 		 getContentPane().add(btnPnl, BorderLayout.SOUTH);
 		 
 	 }
@@ -88,5 +77,4 @@ public class ManageGenreForm extends JInternalFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
-	 
 }

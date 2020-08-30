@@ -39,7 +39,7 @@ public class CreateMembershipForm extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		//judul
-		JLabel title = new JLabel("Create MemberShip");
+		JLabel title = new JLabel("                            Create MemberShip");
 		title.setFont(new Font("Gabriola", Font.PLAIN, 37));
 		
 		//name

@@ -16,11 +16,15 @@ import view.*;
 public class Main extends JFrame {
 
 	 public Main() {
-		// FirstMenuView mainMenu = new FirstMenuView();
-		 CreateMembershipForm createMember = new CreateMembershipForm();
+//		FirstMenuView mainMenu = new FirstMenuView();
+//		CreateMembershipForm createMember = new CreateMembershipForm();
+		 PurchasingMainView purchasingMain = new PurchasingMainView();
+//		 MemberMainView memberMain = new MemberMainView();
 		 
-		// mainMenu.setVisible(true);
-		 createMember.setVisible(true);
+//		 mainMenu.setVisible(true);
+//		createMember.setVisible(true);
+		 purchasingMain.setVisible(true);
+//		 memberMain.setVisible(true);
 	 }
 	 
 	 public static void main(String[] args) {
