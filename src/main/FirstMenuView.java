@@ -41,7 +41,6 @@ public class FirstMenuView extends JFrame{
 		  
 		  add(mainPanel);
 		  
-		  setVisible(true);
 	}
 	
 }

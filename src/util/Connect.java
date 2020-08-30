@@ -6,13 +6,13 @@ import java.sql.*;
 public class Connect {
 	public static Connection connect() {
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
+			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = 
-					DriverManager.getConnection("jdbc:mysql://localhost/mysql?user=&password=");
+					DriverManager.getConnection("jdbc:mysql://localhost:3306/sweebook","root","");
 			return conn;
 		}catch(Exception e) {
-			
+			e.printStackTrace();
 		}
-		 return null;
+		return null;
 	}
 }

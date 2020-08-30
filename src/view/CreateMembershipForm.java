@@ -1,5 +1,6 @@
 package view;
 
-public class CreateMembershipForm {
+import javax.swing.*;
+public class CreateMembershipForm extends JFrame{
 
 }

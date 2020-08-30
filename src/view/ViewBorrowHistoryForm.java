@@ -1,5 +1,7 @@
 package view;
 
-public class ViewBorrowHistoryForm {
+import javax.swing.JInternalFrame;
+
+public class ViewBorrowHistoryForm extends JInternalFrame{
 
 }

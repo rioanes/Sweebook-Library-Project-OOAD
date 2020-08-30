@@ -1,5 +1,6 @@
 package view;
 
-public class BorrowBookForm {
+import javax.swing.*;
+public class BorrowBookForm extends JInternalFrame{
 
 }

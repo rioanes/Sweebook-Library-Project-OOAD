@@ -10,12 +10,25 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import model.*;
+import view.LogInView;
+import view.ManagerMainView;
+import view.MemberMainView;
+
 public class Main extends JFrame {
 
 	 public Main() {
-		 FirstMenuView mainMenu = new FirstMenuView();
+//		 MemberMainView mmv = new MemberMainView();
+//		 mmv.setVisible(true);
 		 
-		 mainMenu.setVisible(true);
+//		 ManagerMainView mmv = new ManagerMainView();
+//		 mmv.setVisible(true);
+//		 
+//		 FirstMenuView fmv = new FirstMenuView();
+//		 fmv.setVisible(true);
+		 
+		 LogInView login = new LogInView();
+		 login.setVisible(true);
 	 }
 	 
 	 public static void main(String[] args) {

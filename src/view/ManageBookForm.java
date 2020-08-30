@@ -1,5 +1,7 @@
 package view;
 
-public class ManageBookForm {
+import javax.swing.*;
+
+public class ManageBookForm extends JInternalFrame{
 
 }

@@ -1,5 +1,7 @@
 package view;
 
-public class ViewBookForm {
+import javax.swing.*;
+
+public class ViewBookForm extends JInternalFrame{
 
 }
