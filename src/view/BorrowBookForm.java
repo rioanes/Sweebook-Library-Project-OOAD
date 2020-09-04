@@ -24,14 +24,14 @@ import controller.*;
 import model.*;
 
 public class BorrowBookForm extends JInternalFrame implements ActionListener {
-	 private BorrowBookHandler bbh;
+	 BorrowBookHandler bbh = new BorrowBookHandler();
 	
-	 //get list
+	 //list
 	 
 	 List<Book> bookList = new ArrayList<Book>();
 	 List<Book> cartList = new ArrayList<Book>();
 	 
-	 BookHandler book = new BookHandler();
+	 BookHandler bookH = new BookHandler();
 	 
 	 //create ui
 	 DefaultTableModel dtm;
@@ -42,7 +42,7 @@ public class BorrowBookForm extends JInternalFrame implements ActionListener {
 	 JScrollPane sPaneCart;
 	 JLabel title;
 	 JLabel titleCart;
-	 JButton close,borrow,add,remove;
+	 JButton close,borrow,addCart,removeCart;
 	 JPanel titlePnl;
 	 JPanel titlePnlCart;
 	 JTable tableBook,tableCart;
@@ -56,62 +56,32 @@ public class BorrowBookForm extends JInternalFrame implements ActionListener {
 		 title = new JLabel("Book List");
 		 		  
 		 //book list
-		 
+		 bookList = bookH.getAll();
 		 String[] ListBookName = {"ID", "Name", "Genre ID", "ISBN", "Qty"};
 		 TableModel tableModelBook = new DefaultTableModel(ListBookName,bookList.size());
 		 tableBook = new JTable(tableModelBook);
 		 
-		 getBookList();
+		 showBookList();
+		 
 		 //cart List
 		 titleCart = new JLabel("Cart List");
 		 
+		 cartList = bbh.getCart();
 		 String[] CartListName = {"ID", "Name", "Genre ID", "ISBN", "Qty"};
 		 TableModel tableModelCart = new DefaultTableModel(CartListName,cartList.size());
 		 tableCart = new JTable(tableModelCart);
 		 
-		 getCartList();
+		 showCartList();
 		 
 		 //button
 //		 close = new JButton("Close");
 		 borrow = new JButton("Borrow");
-		 add = new JButton("add to cart");
-		 remove = new JButton("remove from cart");
+		 addCart = new JButton("add to cart");
+		 removeCart = new JButton("remove from cart");
 		 
-		 add.addActionListener(new ActionListener() {	
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int index = tableBook.getSelectedRow();
-				if(index == -1) {
-					new JOptionPane().showMessageDialog(null, "Choose Book Do You Want Add to Cart!");
-					return;
-				}
-				else {
-//					book.addToCart(bookList.get(index));	
-				}
-			}
-		 });
-		 
-		 remove.addActionListener(new ActionListener() {	
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int index = tableCart.getSelectedRow();
-				if(index == -1) {
-					new JOptionPane().showMessageDialog(null, "Choose Book Do You Want remove!");
-					return;
-				}
-				else {
-					int ans = new JOptionPane().showConfirmDialog(null, "Do You Want to Remove This Book?");
-					 switch(ans){
-				        case JOptionPane.YES_OPTION: 
-				        	tableCart.clearSelection();		
-				        	new JOptionPane().showMessageDialog(null, "Remove Successed !");
-				            break;
-				        case JOptionPane.NO_OPTION:
-				            break;
-				    }
-				}
-			}
-		 });
+		 borrow.addActionListener(this);
+		 addCart.addActionListener(this);
+		 removeCart.addActionListener(this);
 		 
 		 JPanel pnlListBook = new JPanel(new GridLayout(2,1));
 		 pnlListBook.setBorder(BorderFactory.createTitledBorder(
@@ -133,55 +103,89 @@ public class BorrowBookForm extends JInternalFrame implements ActionListener {
 		 JPanel pnlButton = new JPanel(new FlowLayout());
 //		 pnlButton.add(close);
 		 pnlButton.add(borrow);
-		 pnlButton.add(add);
-		 pnlButton.add(remove);
+		 pnlButton.add(addCart);
+		 pnlButton.add(removeCart);
 	  
 		 getContentPane().add(pnlList, BorderLayout.CENTER);
 		 getContentPane().add(pnlButton, BorderLayout.SOUTH);
 		
 		 
 	 }
-	 private void getBookList(){
-//		bookList = new book.getAll();
+	 private void showBookList(){
 		
-		for (int i = 0 ; i < bookList.size() ; i++) {
-//			String id = bookList.get(i).getId();
-//			String name = bookList.get(i).getName();
-//			String genreId = bookList.get(i).getGenreId();
-//			String isbn = bookList.get(i).getIsbn();
-//			int qty = bookList.get(i).getQuantity();
-// 
-//			tableBook.setValueAt(id, i, 0);
-//			tableBook.setValueAt(name, i, 1);
-//			tableBook.setValueAt(genreId, i, 2);
-//			tableBook.setValueAt(isbn, i, 3);
-//			tableBook.setValueAt(qty, i, 4);
+		
+		int size = bookList.size();
+		for (int i = 0 ; i < size ; i++) {
+			String id = bookList.get(i).getId();
+			String name = bookList.get(i).getName();
+			String genreId = bookList.get(i).getGenreId();
+			String isbn = bookList.get(i).getIsbn();
+			int qty = bookList.get(i).getQuantity();
+ 
+			tableBook.setValueAt(id, i, 0);
+			tableBook.setValueAt(name, i, 1);
+			tableBook.setValueAt(genreId, i, 2);
+			tableBook.setValueAt(isbn, i, 3);
+			tableBook.setValueAt(qty, i, 4);
 		}
 	 }
 	 
-	 private void getCartList() {
-//		cartList = new book.getCart();
+	 private void showCartList() {
 			
 		for (int i = 0 ; i < cartList.size() ; i++) {
-//			String id = bookList.get(i).getId();
-//			String name = bookList.get(i).getName();
-//			String genreId = bookList.get(i).getGenreId();
-//			String isbn = bookList.get(i).getIsbn();
-//			int qty = bookList.get(i).getQuantity();
-// 
-//			tableCart.setValueAt(id, i, 0);
-//			tableCart.setValueAt(name, i, 1);
-//			tableCart.setValueAt(genreId, i, 2);
-//			tableCart.setValueAt(isbn, i, 3);
-//			tableCart.setValueAt(qty, i, 4);
+			String id = cartList.get(i).getId();
+			String name = cartList.get(i).getName();
+			String genreId = cartList.get(i).getGenreId();
+			String isbn = cartList.get(i).getIsbn();
+			int qty = cartList.get(i).getQuantity();
+ 
+			tableCart.setValueAt(id, i, 0);
+			tableCart.setValueAt(name, i, 1);
+			tableCart.setValueAt(genreId, i, 2);
+			tableCart.setValueAt(isbn, i, 3);
+			tableCart.setValueAt(qty, i, 4);
 			}
 	}
 	 
 	 @Override
 	 public void actionPerformed(ActionEvent e) {
-	 // TODO Auto-generated method stub
-	 if(e.getSource() == close ) {
-		 this.dispose();
+		 // TODO Auto-generated method stub
+		 if(e.getSource() == close ) {
+			 this.dispose();
+		 }else if(e.getSource() == addCart) {
+			 int index = tableBook.getSelectedRow();
+				if(index == -1) {
+					new JOptionPane().showMessageDialog(null, "Choose Book You Want Add to Cart!");
+					return;
+				}
+				else {
+					bbh.addToCart(bookList.get(index));	
+				}
+		 }else if(e.getSource() == removeCart) {
+			 int index = tableCart.getSelectedRow();
+				if(index == -1) {
+					new JOptionPane().showMessageDialog(null, "Choose Book Do You Want remove!");
+					return;
+				}
+				else {
+					int ans = new JOptionPane().showConfirmDialog(null, "Do You Want to Remove This Book?");
+					 switch(ans){
+				        case JOptionPane.YES_OPTION: 
+				        	tableCart.clearSelection();		
+				        	new JOptionPane().showMessageDialog(null, "Remove Successed !");
+				            break;
+				        case JOptionPane.NO_OPTION:
+				            break;
+				    }
+				}
+		 }else if(e.getSource() == borrow) {
+			 if(bbh.borrowBook() ) {
+				 JOptionPane.showMessageDialog(null, "Borrow Book Success!!");
+			 }else {
+				 JOptionPane.showMessageDialog(null, "Borrow Book Failed!!");
+				 return;
+			 }
+			 
+		 }
 	 }
- }
 }

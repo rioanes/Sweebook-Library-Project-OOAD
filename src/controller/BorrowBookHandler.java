@@ -1,6 +1,9 @@
 package controller;
 
 import javax.swing.*;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import view.*;
 import model.*;
@@ -14,8 +17,10 @@ public class BorrowBookHandler {
 	}
 	
 	public List<Book> getCart() {
+		System.out.println("inside getCart");
 		List<Book> books = new ArrayList<Book>();
 		books.addAll(carts.getCart());
+		System.out.println("after getcart");
 		return books;
 	}
 	
@@ -24,7 +29,11 @@ public class BorrowBookHandler {
 	}
 	
 	public boolean addToCart(Book book) {
+		System.out.println("add to cart");
 		carts.addCart(book);
+		//update quantity
+		System.out.println(carts);
+		System.out.println("done add to cart");
 		return true;
 	}
 	
@@ -41,20 +50,46 @@ public class BorrowBookHandler {
 		countBook += getCart().size();
 		
 		if(countBook > 10) {
+			//books can't be more than 10
+			System.out.println("book more than 10!!");
 			return false;
 		}
+		
 		//validasi gaboleh buku yg lagi dipinjem
 		List<Book> books = new ArrayList<Book>(getCart());
 		
 		for (Book book : books) {
 			boolean cek = new Borrow().isBookStillBorrowing(User.getId(), book.getId());
-			if(cek == false) {
+			if(cek == true) {
 				//print error message
+				System.out.println("can't be the same book!");
 				return false;
 			}
 		}
-		//masukin ke borrow + borrowItem
-		//remove all cart
+		
+		//masukin ke borrow 
+		Borrow borrow = new Borrow();
+		String borrowId = UUID.randomUUID().toString();
+		borrow.setId(borrowId);
+		borrow.setMemberId(User.getId());
+		borrow.setStatus("pending");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		LocalDateTime now = LocalDateTime.now();
+		String borrowTimestamp = dtf.format(now).toString();
+		borrow.setBorrowTimestamp(borrowTimestamp);
+		borrow.insert();
+		
+		//remove all cart and insert to borrowItem
+		for (Book book : books) {
+			BorrowItem bItem = new BorrowItem();
+			bItem.setBookId(book.getId());
+			bItem.setId(borrowId);
+			bItem.setReturnTimestamp("");
+			
+			bItem.insert();
+			removeCart(book);
+		}
+		
 		return true;
 		
 	}

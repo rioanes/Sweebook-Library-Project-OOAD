@@ -49,9 +49,12 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 		titlePnl = new JPanel();
 		titlePnl.add(title);
 		
-		getBorrowList();
 		
+		System.out.println("tes1");
+		getBorrowList();
+		System.out.println("tes2");
 		makeItem();
+		System.out.println("tes3");
 		
 		tblPnl = new JPanel(new GridLayout(2, 1));
 		tblPnl.add(bowPane);
@@ -67,7 +70,7 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 	public void getBorrowList() {
 		boolean isMember;
 		
-		if(User.getRoleId().compareTo(new RoleHandler().getByName("membership").getId()) == 0) isMember = true;
+		if(User.getRoleId().compareTo(new RoleHandler().getByName("Membership").getId()) == 0) isMember = true;
 		else isMember = false;
 		
 		borrowList = new BorrowTransactionHandler().getPendingStatus(isMember);

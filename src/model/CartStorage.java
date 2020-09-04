@@ -12,6 +12,7 @@ public class CartStorage {
 
 	public CartStorage() {
 		super();
+		carts = new HashMap<String, Book>();
 		// TODO Auto-generated constructor stub
 	}
 

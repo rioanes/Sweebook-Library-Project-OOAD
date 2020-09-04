@@ -156,7 +156,7 @@ public class BorrowHistoryForm extends JInternalFrame implements ActionListener 
 		}
 	}
 	
-	private void returnBook() {
+	public void returnBook() {
 		// TODO Auto-generated method stub
 		int index = detTbl.getSelectedRow(); 
 		 if(index == -1) {
@@ -167,11 +167,14 @@ public class BorrowHistoryForm extends JInternalFrame implements ActionListener 
 			 int ans = JOptionPane.showConfirmDialog(null, "Do you want to return book?");
 			 switch(ans){
 	         case JOptionPane.YES_OPTION: 
-	             JOptionPane.showInputDialog(this, "Return Book Successfully");
 	             //remove
-	             borrowList.remove(index);
-	             //update
-//	             borHandler.update();
+	             borrowItem.remove(index);
+	             
+	             //return book
+	             
+	             borHandler.returnBook(inputs);
+	             
+	             JOptionPane.showInputDialog(this, "Return Book Successfully");
 	             break;
 	         case JOptionPane.NO_OPTION:
 	             break;
@@ -181,7 +184,7 @@ public class BorrowHistoryForm extends JInternalFrame implements ActionListener 
 		 showBorrowHistory();
 	}
 	
-	private void filter() {
+	public void filter() {
 		JLabel tit = new JLabel();
 		JSpinner Smonth = new JSpinner();
 	    JSpinner Syear = new JSpinner();

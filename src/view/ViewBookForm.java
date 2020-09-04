@@ -64,7 +64,7 @@ public class ViewBookForm extends JInternalFrame {
 	}
 	
 	public void showBook() {
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < bookList.size(); i++) {
 			String id = bookList.get(i).getId();
 			String name = bookList.get(i).getName();
 			String genreId = bookList.get(i).getGenreId();

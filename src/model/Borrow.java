@@ -14,18 +14,18 @@ public class Borrow {
 	private String status;
 	private String borrowTimestamp;
 	
-	final String insertString = "INSERT INTO borrows (id,member_id, status, borrowTimestamp) VALUES (?, ?, ?, ?);";
+	final String insertString = "INSERT INTO borrows (id,member_id, status, borrow_timestamp) VALUES (?, ?, ?, ?);";
     final String updateString = "UPDATE borrows SET status=?, WHERE id=? ;";
     final String findIdString = "SELECT * FROM borrows WHERE id=? ;";
-    final String countBookString = "SELECT COUNT(*) " + 
+    final String countBookString = "SELECT COUNT(*) AS 'total'" + 
     		"FROM borrow_items JOIN borrows " +
     		"ON borrow_items.borrow_id = borrows.id " + 
-    		"WHERE borrows.id = ? AND borrows.member_id = ? ";
+    		"WHERE borrows.member_id = ? ";
     final String isStillBorrowString =
-    		"SELECT COUNT(*) " + 
+    		"SELECT COUNT(*) AS 'total" + 
     		"FROM borrow_items JOIN borrows " +
     		"ON borrow_items.borrow_id = borrows.id" + 
-    		"WHERE borrows.id = ? AND borrows.member_id = ? AND borrow_items.book_id = ?";
+    		"WHERE borrows.member_id = ? AND borrow_items.book_id = ?";
     
 	//constructor
 	public Borrow() {
@@ -75,10 +75,10 @@ public class Borrow {
 			statement.setString(1, id);
 			ResultSet rs = statement.executeQuery(); //gtw butuh kasi findString ato ga
 			
-			borrow.setId(rs.getString("id"));
-			borrow.setMemberId(rs.getString("memberId"));
-			borrow.setStatus(rs.getString("status"));
-			borrow.setBorrowTimestamp(rs.getString("borrowTimestamp"));
+			borrow.setId(rs.getString(1));
+			borrow.setMemberId(rs.getString(2));
+			borrow.setStatus(rs.getString(3));
+			borrow.setBorrowTimestamp(rs.getString(4));
 				
 		}catch (SQLException ex) {
 			ex.printStackTrace();
@@ -150,12 +150,11 @@ public class Borrow {
 		boolean result = false;
 		try {
 			statement = connection.prepareStatement(isStillBorrowString);
-			statement.setString(1, id);
-			statement.setString(2, userId);
-			statement.setString(3, bookId);
+			statement.setString(1, userId);
+			statement.setString(2, bookId);
 			ResultSet rs = statement.executeQuery(); 
 			
-			if(rs.getInt(1) > 0)
+			if(rs.getInt("total") > 0)
 				result = true;
 				
 		}catch (SQLException ex) {
@@ -180,12 +179,11 @@ public class Borrow {
 		int count = 0;
 		
 		try {
-			statement = connection.prepareStatement(isStillBorrowString);
-			statement.setString(1, id);
-			statement.setString(2, userId);
+			statement = connection.prepareStatement(countBookString);
+			statement.setString(1, userId);
 			ResultSet rs = statement.executeQuery(); 
-			
-			count = rs.getInt(1);
+			System.out.println("count book still borrowing " + rs.getInt("total"));
+			count = rs.getInt("total");
 				
 		}catch (SQLException ex) {
 			ex.printStackTrace();
@@ -210,9 +208,11 @@ public class Borrow {
 		List<Borrow> borrows = new ArrayList<Borrow>();
 		try {
 			if(isOnlyCurrentMember) {
-				query += "member_id = ?";
+				query += "AND member_id = ?";
 				statement = connection.prepareStatement(query);
 				statement.setString(1, memberId);
+			}else {
+				statement = connection.prepareStatement(query);
 			}
 			
 			ResultSet rs = statement.executeQuery(); 
@@ -253,9 +253,11 @@ public class Borrow {
 			statement.setInt(2, date.getYear());
 			
 			if(isOnlyCurrentMember) {
-				query += "member_id = ?";
+				query += "AND member_id = ?";
 				
 				statement.setString(3, memberId);
+			}else {
+				statement = connection.prepareStatement(query);
 			}
 			
 			ResultSet rs = statement.executeQuery(); 
