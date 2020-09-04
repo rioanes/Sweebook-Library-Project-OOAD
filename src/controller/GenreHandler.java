@@ -21,9 +21,9 @@ public class GenreHandler {
 		return newGenre.insert();
 	}
 	
-	
-	GenreHandler genreHandler = new GenreHandler();
-	genreHandler.insert(inputs);
+	public Genre getByType(String type) {
+		return new Genre().getByType(type);
+	}
 }
 
 

@@ -42,6 +42,7 @@ public class FirstMenuView extends JFrame implements ActionListener {
 		btnLogIn.addActionListener(this);
 		btnCreateMember = new JButton("Create Membership");
 		btnCreateMember.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		btnCreateMember.addActionListener(this);
 		  
 		JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 15, 15));
 		buttonPanel.add(btnLogIn);

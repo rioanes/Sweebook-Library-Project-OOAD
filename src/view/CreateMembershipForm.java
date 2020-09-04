@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import controller.MemberHandler;
+import main.FirstMenuView;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -18,6 +19,7 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 	private JPasswordField txtConfirmPassword;
 	
 	MemberHandler member = new MemberHandler();
+	FirstMenuView menu;
 	
 	public CreateMembershipForm() {
 		setTitle("Register Form");
@@ -109,8 +111,9 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 				inputs.put("password", pass);
 				System.out.println("sblm");
 				member.createMembership(inputs);
+				
+				viewMenuForm();
 			}
-			
 		});
 		
 		//txtAddress.setPreferredSize(new Dimension(400,150));
@@ -143,6 +146,14 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 		panel.add(create, BorderLayout.SOUTH);
 		add(panel);
 	}
+	
+	public JFrame viewMenuForm() {
+		this.dispose();
+		menu = new FirstMenuView();
+		menu.setVisible(true);
+		return menu;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub

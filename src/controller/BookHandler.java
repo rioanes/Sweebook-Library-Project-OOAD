@@ -32,13 +32,27 @@ public class BookHandler {
 	}
 	
 	public Book insert(HashMap<String,String> inputs) {
-		//blom
-		return new Book();
+		String id = UUID.randomUUID().toString();
+		String genreId = new GenreHandler().getByType(inputs.get("genre")).getId();
+		
+		Book book = new Book();
+		book.setId(id);
+		book.setGenreId(genreId);
+		book.setName(inputs.get("name"));
+		book.setIsbn(inputs.get("isbn"));
+		book.setQuantity(Integer.parseInt(inputs.get("quantity")));
+		
+		return book.insert();
 	}
 	
 	public Book update(HashMap<String,String> inputs) {
 		//blom
-		return new Book();
+		Book book1 = new Book().getByIsbn(inputs.get("isbn"));
+		book1.setQuantity(Integer.parseInt(inputs.get("quantity")));
+		String genreId = new GenreHandler().getByType(inputs.get("genre")).getId();
+		book1.setId(genreId);
+		
+		return book1.update();
 	}
 	
 	public Book restockBook(String isbn) {

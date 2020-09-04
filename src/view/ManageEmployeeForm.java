@@ -4,10 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -17,23 +20,28 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import controller.EmployeeHandler;
+import controller.RoleHandler;
 import model.Employee;
-import controller.*;
-import model.*;
+import model.Role;
+import model.User;
 
 public class ManageEmployeeForm extends JInternalFrame implements ActionListener {
 	
+	List<Role> roleList = new ArrayList<Role>(); 
 	List<Employee> employeeList = new ArrayList<Employee>();
 	
-	DefaultTableModel dtm;
-	JTable tbl;
-	JScrollPane sPane;
+	User user = new User();
+	
+	DefaultTableModel roleDtm, empDtm;
+	JTable roleTbl, empTbl;
+	JScrollPane rolePane, empPane;
 	
 	JLabel title;
 	
 	JButton addEmp, fireEmp, accReq;
 	
-	JPanel titlePnl, btnPnl;
+	JPanel titlePnl, tblPnl, btnPnl;
 	
 	Employee choosedEmployee;
 	
@@ -41,7 +49,7 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 	
 	JTextField txtSalary, txtStatus;
 	
-	JInternalFrame addEmploy;
+	AddEmployeeForm addEmploy;
 	
 	public ManageEmployeeForm() {
 		setVisible(true);
@@ -53,11 +61,13 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 		titlePnl = new JPanel();
 		titlePnl.add(title);
 		
-		dtm = new DefaultTableModel(employeeList.toArray(), 2);
-		tbl = new JTable(dtm);
-		sPane = new JScrollPane(tbl);
+		getRole();
 		
 		getEmployee();
+		
+		tblPnl = new JPanel(new GridLayout(2, 1));
+		tblPnl.add(rolePane);
+		tblPnl.add(empPane);
 		
 		addEmp = new JButton("Add");
 		addEmp.addActionListener(this);
@@ -74,54 +84,95 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 		btnPnl.add(accReq);
 		
 		add(titlePnl, BorderLayout.NORTH);
-		add(sPane, BorderLayout.CENTER);
+		add(tblPnl, BorderLayout.CENTER);
 		add(btnPnl, BorderLayout.SOUTH);
+	}
+	
+	public void getRole() {
+		roleList = new RoleHandler().getAll();
+		
+		String[] roleNames = {"Role ID", "Role Name"};
+		
+		roleDtm = new DefaultTableModel(roleNames, roleList.size());
+		roleTbl = new JTable(roleDtm);
+		rolePane = new JScrollPane(roleTbl);
+		
+		showRole();
 	}
 	
 	public void getEmployee() {
 		employeeList = new EmployeeHandler().getAll();
+		
+		String[] empNames = {"Employee ID", "Employee Salary", "Employee Status"};
+		
+//		empDtm.setColumnCount(employeeList.size());
+//		empDtm.setColumnIdentifiers(empNames);
+		empDtm = new DefaultTableModel(empNames,employeeList.size());
+		empTbl = new JTable();
+		empTbl.setModel(empDtm);
+		
+		empPane = new JScrollPane(empTbl);
+		
+		showEmployee();
 	}
 	
+	public void showRole() {
+		for (int i = 0; i < roleList.size(); i++) {
+			String id = roleList.get(i).getId();
+			String name = roleList.get(i).getName();
+	
+			roleDtm.setValueAt(id, i , 0);
+			roleDtm.setValueAt(name, i , 1);
+		}
+	}
+	
+	public void showEmployee() {
+		for (int i = 0; i < employeeList.size(); i++) {
+			String id = employeeList.get(i).getId();
+			int salary = employeeList.get(i).getSalary();
+			String status = employeeList.get(i).getStatus();
+	
+			empDtm.setValueAt(id, i, 0);
+			empDtm.setValueAt(salary, i, 1);
+			empDtm.setValueAt(status, i, 2);
+		}
+	}
+	
+	
 	public void addEmployee() {
-		addEmploy = new JInternalFrame();
-        add(addEmploy);
-        addEmploy.setVisible(true);
-        
-		lblSalary = new JLabel("Salary");
-		lblStatus = new JLabel("Status");
+		JDesktopPane pane = new JDesktopPane();
+		addEmploy = new AddEmployeeForm();
 		
-		txtSalary = new JTextField();
-		txtStatus = new JTextField();
-		
-		int salary = Integer.parseInt(txtSalary.getText());
-		String status = txtStatus.getText();
-		
-		JPanel pane = new JPanel(new GridLayout(2, 2, 5, 5));
-		pane.add(lblSalary);
-		pane.add(txtSalary);
-		pane.add(lblStatus);
-		pane.add(txtStatus);
-		
-		employeeList.add(salary, status);
+		getEmployee();
 	}
 	
 	public void fireEmployee() {
-		int index = tbl.getSelectedRow();
+		int index = empTbl.getSelectedRow();
 		if(index == -1) {
-			new JOptionPane().showMessageDialog(null, "Please Choose 1 Employee!");
+			JOptionPane.showMessageDialog(null, "Please Choose 1 Employee!");
 			return;
 		}
-		//ini harusnya remove tapi gatau caranya :(
+		if(employeeList.get(index).getStatus().compareTo("active") != 0) {
+			JOptionPane.showMessageDialog(null, "Please Choose 1 Active Employee!");
+			return;
+		}
+		new EmployeeHandler().firedEmployee(employeeList.get(index).getId());
+		System.out.println("fired!!");
+		
 		getEmployee();
 	}
 	
 	public void acceptReqs() {
-		int index = tbl.getSelectedRow();
+		int index = empTbl.getSelectedRow();
 		if(index == -1) {
-			new JOptionPane().showMessageDialog(null, "Please Choose 1 Employee!");
+			JOptionPane.showMessageDialog(null, "Please Choose 1 Employee!");
 			return;
 		}
-		choosedEmployee.setStatus("Accepted");
+		if(employeeList.get(index).getStatus().compareTo("pending") != 0) {
+			new JOptionPane().showMessageDialog(null, "Please Choose 1 Pending Employee!");
+			return;
+		}
+		new EmployeeHandler().acceptEmployee(employeeList.get(index).getId());
 		getEmployee();
 	}
 
@@ -132,19 +183,22 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 			addEmployee();
 		}
 		else if(e.getSource() == fireEmp) {
-			if(User.getRoleId() == new RoleHandler().getByName("manager").getId()) {
+			System.out.println("role" + User.getRoleId());
+			if(User.getRoleId().equals(new RoleHandler().getByName("Manager").getId()) == true) {
 				fireEmployee();
 			}
 			else {
-				new JOptionPane().showMessageDialog(null, "You Cannot Do This Action");
+				JOptionPane.showMessageDialog(null, "You Cannot Do This Action!");
+				return;
 			}
 		}
 		else if(e.getSource() == accReq) {
-			if(User.getRoleId() == new RoleHandler().getByName("manager").getId()) {
+			if(User.getRoleId().equals(new RoleHandler().getByName("Manager").getId()) == true) {
 				acceptReqs();
 			}
 			else {
-				new JOptionPane().showMessageDialog(null, "You Cannot Do This Action");
+				JOptionPane.showMessageDialog(null, "You Cannot Do This Action!");
+				return;
 			}
 		}
 	}

@@ -25,15 +25,15 @@ public class Main extends JFrame {
 //		 ManagerMainView mmv = new ManagerMainView();
 //		 mmv.setVisible(true);
 //		 
-//		 FirstMenuView fmv = new FirstMenuView();
-//		 fmv.setVisible(true);
-//		 
+		 FirstMenuView fmv = new FirstMenuView();
+		 fmv.setVisible(true);
+		 
 //		 LogInView login = new LogInView();
 //		 login.setVisible(true);
 //		 
-		 CreateMembershipForm cmf = new CreateMembershipForm();
-		 cmf.setVisible(true);
-		 
+//		 CreateMembershipForm cmf = new CreateMembershipForm();
+//		 cmf.setVisible(true);
+//		 
 		 
 	 }
 	 

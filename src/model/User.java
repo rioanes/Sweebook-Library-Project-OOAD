@@ -27,8 +27,8 @@ public class User {
 	}
 	public User(String id, String roleId, String name, String username, String password, String gender) {
 		super();
-		this.id = id;
-		this.roleId = roleId;
+		User.id = id;
+		User.roleId = roleId;
 		this.name = name;
 		this.username = username;
 		this.password = password;
@@ -73,14 +73,27 @@ public class User {
 		this.gender = gender;
 	}
 	
+	public static boolean isRoleMember() {
+		String membershipId = new RoleHandler().getByName("Membership").getId();
+		if(membershipId.equals(User.getRoleId()) == true) 
+			return true;
+		return false;
+	}
+	
+	public static boolean isRoleManager() {
+		String managerId = new RoleHandler().getByName("Manager").getId();
+		if(managerId.equals(User.getRoleId()) == true) 
+			return true;
+		return false;
+	}
 	
 	public User insert() {
 		Connection connection = Connect.connect();
 		PreparedStatement statement = null;
 		try {
 			statement = connection.prepareStatement(insertString);
-			statement.setString(1, this.id);
-			statement.setString(2, this.roleId);
+			statement.setString(1, id);
+			statement.setString(2, roleId);
 			statement.setString(3, this.name);
 			statement.setString(4, this.username);
 			statement.setString(5, this.password);

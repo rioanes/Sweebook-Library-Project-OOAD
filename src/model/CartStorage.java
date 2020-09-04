@@ -28,8 +28,12 @@ public class CartStorage {
 		this.carts = carts;
 	}
 	
-	public Collection<Book> getCart(){ //blom selese
+	public Collection<Book> getCart(){ 
 		List<Book> books = new ArrayList<Book>();
+		
+		for (Book book1 : carts.values()) {
+			books.add(book1);
+		}
 		return books;
 	}
 	

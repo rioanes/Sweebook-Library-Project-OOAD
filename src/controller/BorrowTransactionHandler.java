@@ -19,7 +19,8 @@ public class BorrowTransactionHandler {
 		return new Borrow().getPendingStatus(isOnlyCurrentMember);
 	}
 	
-	public List<Borrow> getAcceptStatus(Date date, boolean isOnlyCurrentMember){
+	public List<Borrow> getAcceptStatus(Date date){
+		boolean isOnlyCurrentMember = User.isRoleMember();
 		return new Borrow().getAcceptStatus(date, isOnlyCurrentMember);
 	}
 	

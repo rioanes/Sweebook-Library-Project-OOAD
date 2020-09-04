@@ -80,7 +80,7 @@ public class ManagerMainView extends JFrame implements ActionListener {
 	public JInternalFrame showManageEmployeeForm() {
 		remove(photo);
 		manEmpForm = new ManageEmployeeForm();
-		add(manEmpForm).setSize(700, 400);
+		add(manEmpForm).setSize(340, 335);
 		return manEmpForm;
 	}
 	

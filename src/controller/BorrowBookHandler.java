@@ -54,7 +54,7 @@ public class BorrowBookHandler {
 			}
 		}
 		//masukin ke borrow + borrowItem
-		
+		//remove all cart
 		return true;
 		
 	}

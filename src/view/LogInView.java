@@ -101,22 +101,22 @@ public class LogInView extends JFrame implements ActionListener {
 				ManagerMainView managerView = new ManagerMainView();
 				managerView.setVisible(true);
 			}
-//			else if(user.getRoleId() == roleH.getByName( "Human Capital").getId()) {
-//				HumanCapitalMainView humanView = new HumanCapitalMainView();
-//				humanView.setVisible(true);
-//			}
-//			else if(user.getRoleId() == roleH.getByName( "Administrator").getId()) {
-//				AdministratorMainView adminView = new AdministratorMainView();
-//				adminView.setVisible(true);
-//			}
+			else if(User.getRoleId().equals(roleH.getByName("Human Capital").getId())== true) {
+				HumanCapitalMainView humanView = new HumanCapitalMainView();
+				humanView.setVisible(true);
+			}
+			else if(User.getRoleId().equals(roleH.getByName( "Administrator").getId()) == true) {
+				AdministratorMainView adminView = new AdministratorMainView();
+				adminView.setVisible(true);
+			}
 			else if(User.getRoleId().equals(roleH.getByName( "Membership").getId()) == true) {
 				MemberMainView memberView = new MemberMainView();
 				memberView.setVisible(true);
 			}
-//			else if(user.getRoleId() == roleH.getByName( "Purchasing").getId()) {
-//				PurchasingMainView purchaseView = new PurchasingMainView();
-//				purchaseView.setVisible(true);
-//			}
+			else if(User.getRoleId().equals(roleH.getByName( "Purchasing").getId()) == true) {
+				PurchasingMainView purchaseView = new PurchasingMainView();
+				purchaseView.setVisible(true);
+			}
 		}
 	}
 }
