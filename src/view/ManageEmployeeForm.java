@@ -65,8 +65,7 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 		employeeList = new EmployeeHandler().getAll();
 		String[] empNames = {"Employee ID", "Employee Salary", "Employee Status"};
 		empDtm = new DefaultTableModel(empNames,employeeList.size());
-		empTbl = new JTable();
-		empTbl.setModel(empDtm);
+		empTbl = new JTable(empDtm);
 		
 		empPane = new JScrollPane(empTbl);
 		
@@ -111,6 +110,7 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 
 	public void refreshEmployeeTable() {
 		empDtm.setRowCount(0);
+		
 		showEmployee();
 	}
 	
@@ -119,8 +119,8 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 			String id = roleList.get(i).getId();
 			String name = roleList.get(i).getName();
 	
-			roleDtm.setValueAt(id, i , 0);
-			roleDtm.setValueAt(name, i , 1);
+			roleTbl.setValueAt(id, i , 0);
+			roleTbl.setValueAt(name, i , 1);
 		}
 	}
 	
@@ -128,21 +128,22 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 		employeeList = new EmployeeHandler().getAll();
 		int size = employeeList.size();
 		empDtm.setRowCount(size);
-		for (int i = 0; i < employeeList.size(); i++) {
+		
+		for (int i = 0; i < size; i++) {
 			String id = employeeList.get(i).getId();
 			int salary = employeeList.get(i).getSalary();
 			String status = employeeList.get(i).getStatus();
 	
-			empDtm.setValueAt(id, i, 0);
-			empDtm.setValueAt(salary, i, 1);
-			empDtm.setValueAt(status, i, 2);
+			empTbl.setValueAt(id, i, 0);
+			empTbl.setValueAt(salary, i, 1);
+			empTbl.setValueAt(status, i, 2);
 		}
 	}
 	
 	
 	public void addEmployee() {
 		
-		addEmploy = new AddEmployeeForm();
+		addEmploy = new AddEmployeeForm(this);
 		
 		refreshEmployeeTable();
 	}

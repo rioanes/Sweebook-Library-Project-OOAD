@@ -24,7 +24,7 @@ public class HumanCapitalMainView extends JFrame implements ActionListener {
 		// TODO Auto-generated constructor stub
 		getContentPane().setLayout(null);
 		setTitle("Manager Main Menu");
-		setSize(1360, 769);
+		setSize(600, 400);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		

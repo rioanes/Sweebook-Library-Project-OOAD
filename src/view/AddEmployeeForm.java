@@ -46,8 +46,9 @@ public class AddEmployeeForm extends JDialog implements ActionListener {
 	SpinnerModel snmSalary;
 	
 	JButton addEmployee;
-	
-	public AddEmployeeForm() {
+	ManageEmployeeForm manageEmployeeF;
+	public AddEmployeeForm(ManageEmployeeForm form) {
+		this.manageEmployeeF = form;
 		getContentPane().setLayout(null);
 		setVisible(true);
 		setLocation(500, 140);
@@ -217,7 +218,7 @@ public class AddEmployeeForm extends JDialog implements ActionListener {
 			inputs.put("salary", salary.toString());
 				
 			new EmployeeHandler().createEmployee(inputs);
-			new ManageEmployeeForm().refreshEmployeeTable();
+			manageEmployeeF.refreshEmployeeTable();
 			dispose();
 			
 		}
