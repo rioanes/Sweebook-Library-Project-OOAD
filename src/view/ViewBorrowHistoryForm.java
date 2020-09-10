@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
@@ -86,26 +87,18 @@ public class ViewBorrowHistoryForm extends JInternalFrame implements ActionListe
 	
 	public void getBorrowHistory() {
 		//Get Date
+		
 		now = LocalDate.now();
-		int month = now.getMonthValue();
-		int year = now.getYear();
+		Date date = java.sql.Date.valueOf(now);
 		
-		String combine = String.valueOf(month) + "-" + String.valueOf(year);
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("MM-yyyy");
-		Date date = new Date();
-		try {
-			date = sdf.parse(combine);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		System.out.println("tes");
+		System.out.println(date.toString());
+		System.out.println("tes2");
 		//IsMember?
 		
 		boolean isMember;
 		
-		if(User.getRoleId().compareTo(new RoleHandler().getByName("membership").getId()) == 0) isMember = true;
+		if(User.getRoleId().compareTo(new RoleHandler().getByName("Membership").getId()) == 0) isMember = true;
 		else isMember = false;
 		
 		borrowList = new BorrowTransactionHandler().getAcceptStatus(date);

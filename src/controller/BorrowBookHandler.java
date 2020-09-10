@@ -20,6 +20,7 @@ public class BorrowBookHandler {
 		System.out.println("inside getCart");
 		List<Book> books = new ArrayList<Book>();
 		books.addAll(carts.getCart());
+		
 		System.out.println("after getcart");
 		return books;
 	}
@@ -30,9 +31,17 @@ public class BorrowBookHandler {
 	
 	public boolean addToCart(Book book) {
 		System.out.println("add to cart");
+		
+		if(carts.isAlreadyExist(book)) {
+			System.out.println("book already in cart");
+			return false;
+		}
+		
 		carts.addCart(book);
+		
 		//update quantity
-		System.out.println(carts);
+		
+		
 		System.out.println("done add to cart");
 		return true;
 	}
@@ -46,6 +55,11 @@ public class BorrowBookHandler {
 		//validasi buku yg boleh di borrow maks 10 termasuk yg udah dipinjem
 		Borrow borrowModel = new Borrow();
 		int countBook = borrowModel.getCountBookStillBorrowing(User.getId());
+		
+		if(getCart().size() == 0) {
+			System.out.println("no book in cart");
+			return false;
+		}
 		
 		countBook += getCart().size();
 		

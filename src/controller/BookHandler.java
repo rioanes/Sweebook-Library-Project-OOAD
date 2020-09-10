@@ -33,7 +33,11 @@ public class BookHandler {
 	
 	public Book insert(HashMap<String,String> inputs) {
 		String id = UUID.randomUUID().toString();
-		String genreId = new GenreHandler().getByType(inputs.get("genre")).getId();
+		Genre genre =  new GenreHandler().getByType(inputs.get("type"));
+		if(genre == null) {
+			genre = new GenreHandler().insert(inputs);
+		}
+		String genreId = genre.getId();
 		
 		Book book = new Book();
 		book.setId(id);
@@ -42,29 +46,38 @@ public class BookHandler {
 		book.setIsbn(inputs.get("isbn"));
 		book.setQuantity(Integer.parseInt(inputs.get("quantity")));
 		
-		return book.insert();
+		book = book.insert();
+		JOptionPane.showMessageDialog(null, "Book Inserted");
+		
+		return book;
 	}
 	
 	public Book update(HashMap<String,String> inputs) {
-		//blom
-		Book book1 = new Book().getByIsbn(inputs.get("isbn"));
-		book1.setQuantity(Integer.parseInt(inputs.get("quantity")));
-		String genreId = new GenreHandler().getByType(inputs.get("genre")).getId();
-		book1.setId(genreId);
 		
-		return book1.update();
+		Book book1 = new Book().getByIsbn(inputs.get("isbn"));
+		
+		Genre genre =  new GenreHandler().getByType(inputs.get("type"));
+		if(genre == null) {
+			genre = new GenreHandler().insert(inputs);
+		}
+		String genreId = genre.getId();	
+		
+		book1.setGenreId(genreId);
+		book1.setQuantity(book1.getQuantity() + Integer.parseInt(inputs.get("quantity")));
+		
+		book1 = book1.update();
+		JOptionPane.showMessageDialog(null, "Book Updated");
+		return book1;
 	}
 	
-	public Book restockBook(String isbn) {
+	public Book restockBook(HashMap<String,String> inputs) {
 		Book book1 = new Book();
-		book1 = book1.getByIsbn(isbn);
+		book1 = book1.getByIsbn(inputs.get("isbn"));
 		
-		if(book1 == null) {
-			//create book
-			//panggil view buat create book
-			//insert book
+		if(book1.getIsbn() == null) {
+			insert(inputs);
 		}else {
-			//update quantity
+			update(inputs);
 		}
 		
 		return book1;
@@ -74,8 +87,12 @@ public class BookHandler {
 		Book book1 = new Book();
 		
 		book1 = book1.find(id);
-		if(book1 == null) return false;
+		if(book1 == null) {
+			JOptionPane.showMessageDialog(null, "Delete Failed!");
+			return false;
+		}
 		else {
+			JOptionPane.showMessageDialog(null, "Book Deleted!!");
 			return book1.delete();
 		}
 	}

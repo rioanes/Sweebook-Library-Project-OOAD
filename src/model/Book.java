@@ -205,7 +205,7 @@ public class Book {
 			statement.setString(1, isbn);
 			ResultSet rs = statement.executeQuery(); //gtw butuh kasi findString ato ga
 			
-			while(rs.next()) {
+			if(rs.next()) {
 				book1.setId(rs.getString(1));
 				book1.setGenreId(rs.getString(2));
 				book1.setName(rs.getString(3));

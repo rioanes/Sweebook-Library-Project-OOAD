@@ -15,9 +15,10 @@ public class Genre {
 	private String id;
 	private String type;
 	
-	final String selectString = "SELECT * FROM genre ORDER BY id DESC;";
-	final String insertString = "INSERT INTO genre (id,type) VALUES (?, ?);";
-	final String findIdString = "SELECT * FROM genre WHERE type=? ;";
+	final String selectString = "SELECT * FROM genres ORDER BY id DESC;";
+	final String insertString = "INSERT INTO genres (id,type) VALUES (?, ?);";
+	final String findbyTypeString = "SELECT * FROM genres WHERE type=? ;";
+	final String findbyIdString = "SELECT * FROM genres WHERE id=? ;";
 	
 	public Genre() {
 		super();
@@ -50,8 +51,8 @@ public class Genre {
 			ResultSet rs = st.executeQuery(selectString);
 			while(rs.next()) {
 				Genre genre = new Genre();
-				genre.setId(rs.getString("id"));
-				genre.setType(rs.getString("type"));
+				genre.setId(rs.getString(1));
+				genre.setType(rs.getString(2));
 				
 				genres.add(genre);
 			}
@@ -91,12 +92,41 @@ public class Genre {
 		PreparedStatement statement = null;
 		Genre genre = new Genre();
 		try {
-			statement = connection.prepareStatement(findIdString);
+			statement = connection.prepareStatement(findbyTypeString);
 			statement.setString(1, type);
-			ResultSet rs = statement.executeQuery(); //gtw butuh kasi findString ato ga
+			ResultSet rs = statement.executeQuery(); 
 			
-			genre.setId(rs.getString("id"));
-			genre.setType(rs.getString("type"));
+			if(rs.next()) {
+				genre.setId(rs.getString("id"));
+				genre.setType(rs.getString("type"));				
+			}
+			
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+			} catch(SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+		
+		return genre;
+	}
+	
+	public Genre find(String id) {
+		Connection connection = Connect.connect();
+		PreparedStatement statement = null;
+		Genre genre = new Genre();
+		try {
+			statement = connection.prepareStatement(findbyIdString);
+			statement.setString(1, id);
+			ResultSet rs = statement.executeQuery(); 
+			
+			if(rs.next()) {
+				genre.setId(rs.getString("id"));
+				genre.setType(rs.getString("type"));				
+			}
 			
 		}catch (SQLException ex) {
 			ex.printStackTrace();

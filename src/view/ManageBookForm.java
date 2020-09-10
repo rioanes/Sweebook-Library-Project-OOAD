@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.*;
@@ -22,23 +23,24 @@ import java.awt.GridLayout;
 public class ManageBookForm extends JInternalFrame implements ActionListener{
 
 	 ManageGenreForm manGen= new ManageGenreForm();
-	 PurchasingMainView purchasingMain;
 	 BookHandler bookHan = new BookHandler();
 	
-	 List<Book> BookList = new ArrayList<Book>();
+	 List<Book> bookList = new ArrayList<Book>();
+	 
+	 JTable table;
+	 DefaultTableModel tableModel;
 
 	 JScrollPane sPane, sPaneCart;
 	 JLabel title,titleCart;
 	 JButton close,restock, delete, viewGen;
 	 JPanel titlePnl,titlePnlCart;
 	 JSpinner spQuantity;
-	 JTable table;
 	 
 	 public ManageBookForm() {
-		 setVisible(true);
 		 setSize(340, 335);
 		 setLocation(225, 10);
 		 setClosable(true);
+		 setVisible(true);
 	  
 		 title = new JLabel("Book List");
 		 titlePnl = new JPanel();
@@ -46,11 +48,11 @@ public class ManageBookForm extends JInternalFrame implements ActionListener{
 		 
 		 
 		 //book list
+		 bookList = bookHan.getAll();
 		 String[] ListBookName = {"ID", "Name", "Genre ID", "ISBN", "Qty"};
-		 TableModel tableModel = new DefaultTableModel(ListBookName,BookList.size());
+		 tableModel = new DefaultTableModel(ListBookName,bookList.size());
 		 table = new JTable(tableModel);
-		 
-		 getBook();
+		 showBook(); 
 		 
 		 //button
 		 close = new JButton("Back");
@@ -74,43 +76,52 @@ public class ManageBookForm extends JInternalFrame implements ActionListener{
 				    "Input ISBN:", ISBN,
 				    "Input Quantity:", quantity,
 				};
-				int option = JOptionPane.showConfirmDialog(null, message, "Enter all your values", JOptionPane.OK_CANCEL_OPTION);
+				int option = JOptionPane.showConfirmDialog(null, message, "Enter Book Data", JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION)
 				{
 				    String valueName = name.getText();
 				    String valueGenre = genre.getText();
 				    String valueISBN = ISBN.getText();
-				    int valueQuantity = (Integer) quantity.getValue();
+				    int valueQuantity =  (Integer) quantity.getValue();
 				    if(valueName.length()<1 || valueGenre.length()<1 || valueISBN.length()<1 || valueQuantity == 0) {
-				    	new JOptionPane().showMessageDialog(null, "Please Completed the Data !");
+				    	JOptionPane.showMessageDialog(null, "Please Completed the Data !");
 				    	return;
 				    }
 				    else {
-//						bookHan.restockBook(valueName, valueGenreId, valueISBN, valueQuantity);		    	
+				    	HashMap<String,String> inputs = new HashMap<String,String>();
+				    	inputs.put("name",valueName);
+				    	inputs.put("type",valueGenre);
+				    	inputs.put("isbn",valueISBN);
+				    	inputs.put("quantity", Integer.toString(valueQuantity) );
+				    	bookHan.restockBook(inputs);
+
+				    	refreshTable();
 				    }
 				}
 			}
 		 });
+		 
 		 delete.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int index = table.getSelectedRow();
 				 if(index == -1) {
-					 new JOptionPane().showMessageDialog(null, "Choose Book to Deleted!");
+					JOptionPane.showMessageDialog(null, "Choose Book to Deleted!");
 					return;
 				 }
 				 else {
 					 int ans = JOptionPane.showConfirmDialog(null, "Do you want to delete book?");
 					 switch(ans){
 			         case JOptionPane.YES_OPTION: 
-			             JOptionPane.showInputDialog(this, "Deleted Successfully");
-			             BookList.remove(index);
+			             bookHan.delete(bookList.get(index).getId());
 			             break;
 			         case JOptionPane.NO_OPTION:
+			        	 JOptionPane.showMessageDialog(null, "Delete Canceled!!");
 			             break;
 					 }
 				 }
-				 getBook();
+				 refreshTable();
+				 
 			}
 		 });
 		 
@@ -124,28 +135,37 @@ public class ManageBookForm extends JInternalFrame implements ActionListener{
 		 getContentPane().add(pnlButton, BorderLayout.SOUTH);
 	 }
 	 
-	 private void getBook() {
-//			bookList = new book.getAll();
+	 public void refreshTable() {
+		 tableModel.setRowCount(0);
+		 showBook();
+	 }
+	 
+	 public void showBook() {
+			bookList = bookHan.getAll();
+			int size = bookList.size();
+			tableModel.setRowCount(size);
 			
-			for (int i = 0 ; i < BookList.size() ; i++) {
-//				String id = bookList.get(i).getId();
-//				String name = bookList.get(i).getName();
-//				String genreId = bookList.get(i).getGenreId();
-//				String isbn = bookList.get(i).getIsbn();
-//				int qty = bookList.get(i).getQuantity();
-	// 
-//				tableBook.setValueAt(id, i, 0);
-//				tableBook.setValueAt(name, i, 1);
-//				tableBook.setValueAt(genreId, i, 2);
-//				tableBook.setValueAt(isbn, i, 3);
-//				tableBook.setValueAt(qty, i, 4);
+			for (int i = 0 ; i < bookList.size() ; i++) {
+				String id = bookList.get(i).getId();
+				String name = bookList.get(i).getName();
+				String genreId = bookList.get(i).getGenreId();
+				String isbn = bookList.get(i).getIsbn();
+				int qty = bookList.get(i).getQuantity();
+	 
+				table.setValueAt(id, i, 0);
+				table.setValueAt(name, i, 1);
+				table.setValueAt(genreId, i, 2);
+				table.setValueAt(isbn, i, 3);
+				table.setValueAt(qty, i, 4);
 			}
 	 }
 	 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		if(e.getSource() == close) {
+			setVisible(false);
+		}
 	 }
 
 }

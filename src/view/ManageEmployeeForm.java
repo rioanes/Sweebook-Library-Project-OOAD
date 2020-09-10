@@ -61,9 +61,18 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 		titlePnl = new JPanel();
 		titlePnl.add(title);
 		
+		
+		employeeList = new EmployeeHandler().getAll();
+		String[] empNames = {"Employee ID", "Employee Salary", "Employee Status"};
+		empDtm = new DefaultTableModel(empNames,employeeList.size());
+		empTbl = new JTable();
+		empTbl.setModel(empDtm);
+		
+		empPane = new JScrollPane(empTbl);
+		
 		getRole();
 		
-		getEmployee();
+		showEmployee();
 		
 		tblPnl = new JPanel(new GridLayout(2, 1));
 		tblPnl.add(rolePane);
@@ -99,20 +108,9 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 		
 		showRole();
 	}
-	
-	public void getEmployee() {
-		employeeList = new EmployeeHandler().getAll();
-		
-		String[] empNames = {"Employee ID", "Employee Salary", "Employee Status"};
-		
-//		empDtm.setColumnCount(employeeList.size());
-//		empDtm.setColumnIdentifiers(empNames);
-		empDtm = new DefaultTableModel(empNames,employeeList.size());
-		empTbl = new JTable();
-		empTbl.setModel(empDtm);
-		
-		empPane = new JScrollPane(empTbl);
-		
+
+	public void refreshEmployeeTable() {
+		empDtm.setRowCount(0);
 		showEmployee();
 	}
 	
@@ -127,6 +125,9 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 	}
 	
 	public void showEmployee() {
+		employeeList = new EmployeeHandler().getAll();
+		int size = employeeList.size();
+		empDtm.setRowCount(size);
 		for (int i = 0; i < employeeList.size(); i++) {
 			String id = employeeList.get(i).getId();
 			int salary = employeeList.get(i).getSalary();
@@ -140,10 +141,10 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 	
 	
 	public void addEmployee() {
-		JDesktopPane pane = new JDesktopPane();
+		
 		addEmploy = new AddEmployeeForm();
 		
-		getEmployee();
+		refreshEmployeeTable();
 	}
 	
 	public void fireEmployee() {
@@ -159,7 +160,7 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 		new EmployeeHandler().firedEmployee(employeeList.get(index).getId());
 		System.out.println("fired!!");
 		
-		getEmployee();
+		refreshEmployeeTable();
 	}
 	
 	public void acceptReqs() {
@@ -169,11 +170,11 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 			return;
 		}
 		if(employeeList.get(index).getStatus().compareTo("pending") != 0) {
-			new JOptionPane().showMessageDialog(null, "Please Choose 1 Pending Employee!");
+			JOptionPane.showMessageDialog(null, "Please Choose 1 Pending Employee!");
 			return;
 		}
 		new EmployeeHandler().acceptEmployee(employeeList.get(index).getId());
-		getEmployee();
+		refreshEmployeeTable();
 	}
 
 	@Override

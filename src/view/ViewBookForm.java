@@ -38,8 +38,8 @@ public class ViewBookForm extends JInternalFrame {
 	public ViewBookForm() {
 		setSize(340, 335);
 		setLocation(225, 10);
-		setVisible(true);
 		setClosable(true);
+		setVisible(true);
 		
 		title = new JLabel("Book List");
 		titlePnl = new JPanel();

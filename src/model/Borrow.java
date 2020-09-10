@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 import util.*;
 import java.util.*;
@@ -17,15 +18,15 @@ public class Borrow {
 	final String insertString = "INSERT INTO borrows (id,member_id, status, borrow_timestamp) VALUES (?, ?, ?, ?);";
     final String updateString = "UPDATE borrows SET status=?, WHERE id=? ;";
     final String findIdString = "SELECT * FROM borrows WHERE id=? ;";
-    final String countBookString = "SELECT COUNT(*) AS 'total'" + 
+    final String countBookString = "SELECT COUNT(*) AS 'total' " + 
     		"FROM borrow_items JOIN borrows " +
     		"ON borrow_items.borrow_id = borrows.id " + 
     		"WHERE borrows.member_id = ? ";
     final String isStillBorrowString =
-    		"SELECT COUNT(*) AS 'total" + 
+    		"SELECT COUNT(*) AS 'total' " + 
     		"FROM borrow_items JOIN borrows " +
-    		"ON borrow_items.borrow_id = borrows.id" + 
-    		"WHERE borrows.member_id = ? AND borrow_items.book_id = ?";
+    		"ON borrow_items.borrow_id = borrows.id " + 
+    		"WHERE borrows.member_id = ? AND borrow_items.book_id = ? ";
     
 	//constructor
 	public Borrow() {
@@ -147,6 +148,7 @@ public class Borrow {
 		Connection connection = Connect.connect();
 		PreparedStatement statement = null;
 		
+		int count = 0;
 		boolean result = false;
 		try {
 			statement = connection.prepareStatement(isStillBorrowString);
@@ -154,7 +156,12 @@ public class Borrow {
 			statement.setString(2, bookId);
 			ResultSet rs = statement.executeQuery(); 
 			
-			if(rs.getInt("total") > 0)
+			while(rs.next()) {
+				System.out.println("in is borrow");
+				count = rs.getInt("total");
+			}
+			
+			if(count > 0)
 				result = true;
 				
 		}catch (SQLException ex) {
@@ -182,8 +189,12 @@ public class Borrow {
 			statement = connection.prepareStatement(countBookString);
 			statement.setString(1, userId);
 			ResultSet rs = statement.executeQuery(); 
-			System.out.println("count book still borrowing " + rs.getInt("total"));
-			count = rs.getInt("total");
+			
+			while(rs.next()) {
+				System.out.println("in count");
+				count = rs.getInt("total");
+				System.out.println("count book still borrowing " + rs.getInt("total"));
+			}
 				
 		}catch (SQLException ex) {
 			ex.printStackTrace();
@@ -242,24 +253,29 @@ public class Borrow {
 	
 	public List<Borrow> getAcceptStatus(Date date, boolean isOnlyCurrentMember){
 		String query = "SELECT * FROM `borrows` "
-				+ "WHERE MONTH = ? AND YEAR = ? AND `status` = 'accept' ";
+				+ "WHERE MONTH(borrow_timestamp) = ? AND YEAR(borrow_timestamp) = ? AND `status` = 'accept' ";
 		Connection connection = Connect.connect();
 		PreparedStatement statement = null;
 		
 		List<Borrow> borrows = new ArrayList<Borrow>();
 		try {
-			statement = connection.prepareStatement(query);
-			statement.setInt(1, date.getMonth());
-			statement.setInt(2, date.getYear());
-			
+			int year = Integer.parseInt(new SimpleDateFormat("yyyy").format(date));
+			int month =Integer.parseInt(new SimpleDateFormat("MM").format(date));
 			if(isOnlyCurrentMember) {
 				query += "AND member_id = ?";
 				
+				statement = connection.prepareStatement(query);
+				statement.setInt(1, month);
+				statement.setInt(2, year);
 				statement.setString(3, memberId);
 			}else {
 				statement = connection.prepareStatement(query);
+				statement.setInt(1, month);
+				statement.setInt(2, year);
+				
 			}
-			
+			System.out.println(month);
+			System.out.println(year);
 			ResultSet rs = statement.executeQuery(); 
 			
 			while(rs.next()) {

@@ -11,11 +11,23 @@ public class PurchasingMainView extends JFrame implements ActionListener{
 	JLabel photo,title;
 	JButton viewBook,manage , deleteBook, btnManageGenre; 
 	
-	ViewBookForm view = new ViewBookForm();
-	ManageBookForm manageBook = new ManageBookForm();
-	ManageGenreForm manageGenre = new ManageGenreForm();
+	ViewBookForm view ;
+	ManageBookForm manageBook ;
+	ManageGenreForm manageGenre ;
 	
 	public PurchasingMainView() {
+		view = new ViewBookForm();
+		manageBook = new ManageBookForm();
+		manageGenre = new ManageGenreForm();
+		
+		view.setVisible(false);
+		manageBook.setVisible(false);
+		manageGenre.setVisible(false);
+		
+		add(view);
+		add(manageBook);
+		add(manageGenre);
+		
 		setTitle("Purchasing Main Menu");
 		setSize(600,400);
 		setLocationRelativeTo(null);
@@ -49,45 +61,72 @@ public class PurchasingMainView extends JFrame implements ActionListener{
 		getContentPane().add(btnManageGenre);
 		btnManageGenre.addActionListener(this);
 
+		add_photo();
+	}
+	
+	public void add_photo() {
 		//photo
 		photo = new JLabel("New label");
 		photo.setBounds(245, 65, 284, 240);
 		getContentPane().add(photo);
 		photo.setIcon(new ImageIcon("C:\\rio\\cawu 3.2\\2) Object Oriented Analysis & Design\\7) Project\\Sweebook-Library-Project-OOAD\\aaa.png"));
-		
-	    
+				
 	}
-	 public JInternalFrame ViewBookForm() {
-	     remove(photo);
-	     view = new ViewBookForm();
-	     add(view).setSize(340, 335);
-	     return view;
-	 }
+	
+	
+	public JInternalFrame ViewBookForm() {
+		if(view.isVisible() == true) {
+			view.dispose();
+		}else {
+			manageBook.dispose();
+			manageGenre.dispose();
+			
+			view = new ViewBookForm();
+			add(view);
+		}
+	   
+	    return view;
+	}
 	 
-	 public JInternalFrame ManageBookForm() {
-	     remove(photo);
-	     manageBook = new ManageBookForm();
-	     add(manageBook).setSize(340, 335);
-	     return manageBook;
-	 }
+	public JInternalFrame ManageBookForm() {
+		if(manageBook.isVisible() == true) {
+			manageBook.dispose();
+		}else {
+			view.dispose();
+			manageGenre.dispose();
+			
+			manageBook = new ManageBookForm();
+			add(manageBook);
+			
+		}
+	    return manageBook;
+	}
 	 
-	 public JInternalFrame ManageGenreForm() {
-		 remove(photo);
-		 manageGenre = new ManageGenreForm();
-		 add(manageGenre).setSize(340,335);
-		 return manageGenre;
-	 }
+	public JInternalFrame ManageGenreForm() {
+		if(manageGenre.isVisible() == true) {
+			manageGenre.dispose();
+		}else {
+			view.dispose();
+			manageBook.dispose();
+			
+			manageGenre = new ManageGenreForm();
+			add(manageGenre);
+			
+		}
+		 
+		return manageGenre;
+	}
 	 
-	 public void actionPerformed(ActionEvent e){
-		 if(e.getSource() == viewBook) {
-			 ViewBookForm();
-		 }
-	     else if(e.getSource() == manage) {
-	    	 ManageBookForm();
-	     }
-	     else if(e.getSource() == btnManageGenre) {
-	    	 ManageGenreForm();
-	     }
-	 getContentPane().add(photo);
-	 }
+	public void actionPerformed(ActionEvent e){
+		if(e.getSource() == viewBook) {
+			ViewBookForm();
+		}
+	    else if(e.getSource() == manage) {
+	    	ManageBookForm();
+	    }
+	    else if(e.getSource() == btnManageGenre) {
+	    	ManageGenreForm();
+	    }
+		getContentPane().add(photo);
+	}
 }

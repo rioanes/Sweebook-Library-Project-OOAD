@@ -156,7 +156,7 @@ public class AddEmployeeForm extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource() == addEmployee) {
-			int flag = 0;
+			
 			
 			//Role
 			
@@ -166,7 +166,7 @@ public class AddEmployeeForm extends JDialog implements ActionListener {
 			
 			String name = txtName.getText();
 			if(name.compareTo("") == 0) {
-				new JOptionPane().showMessageDialog(null, "Please input name!!");
+				JOptionPane.showMessageDialog(null, "Please input name!!");
 				return;
 			}
 			
@@ -174,7 +174,7 @@ public class AddEmployeeForm extends JDialog implements ActionListener {
 			
 			String username = txtUsername.getText();
 			if(username.compareTo("") == 0) {
-				new JOptionPane().showMessageDialog(null, "Please input username!!");
+				JOptionPane.showMessageDialog(null, "Please input username!!");
 				return;
 			}
 			
@@ -183,17 +183,28 @@ public class AddEmployeeForm extends JDialog implements ActionListener {
 			String password = new String(txtPassword.getPassword());
 			String confirm = new String(txtPassword.getPassword());
 			
+			if(password.compareTo("") == 0 || confirm.compareTo("") == 0) {
+				JOptionPane.showMessageDialog(null, "Please input password!!");
+				return;
+			}
+			
+			if(password.equals(confirm) == false) {
+				JOptionPane.showMessageDialog(null, "Password didn't match!!");
+				return;
+			}
+			
+			
 			//Gender
 			
 			String gender = getGender();
 			if(getGender() == null) {
-				new JOptionPane().showMessageDialog(null, "Please choose gender!!");
+				JOptionPane.showMessageDialog(null, "Please choose gender!!");
 				return;
 			}
 			
 			Integer salary = (Integer)(snmSalary.getValue());
 			if(salary < 10000) {
-				new JOptionPane().showMessageDialog(null, "Salary must be greater than 10000!!");
+				JOptionPane.showMessageDialog(null, "Salary must be greater than 10000!!");
 				return;
 			}
 
@@ -206,6 +217,7 @@ public class AddEmployeeForm extends JDialog implements ActionListener {
 			inputs.put("salary", salary.toString());
 				
 			new EmployeeHandler().createEmployee(inputs);
+			new ManageEmployeeForm().refreshEmployeeTable();
 			dispose();
 			
 		}

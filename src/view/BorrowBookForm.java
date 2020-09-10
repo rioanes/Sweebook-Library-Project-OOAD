@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.JOptionPane;
 import javax.swing.BorderFactory;
 import javax.swing.border.TitledBorder;
@@ -34,8 +33,8 @@ public class BorrowBookForm extends JInternalFrame implements ActionListener {
 	 BookHandler bookH = new BookHandler();
 	 
 	 //create ui
-	 DefaultTableModel dtm;
-	 DefaultTableModel dtmCart;
+	 
+	 DefaultTableModel tableModelBook, tableModelCart;
 	 JTable tbl;
 	 JTable tblCart;
 	 JScrollPane sPane;
@@ -58,7 +57,7 @@ public class BorrowBookForm extends JInternalFrame implements ActionListener {
 		 //book list
 		 bookList = bookH.getAll();
 		 String[] ListBookName = {"ID", "Name", "Genre ID", "ISBN", "Qty"};
-		 TableModel tableModelBook = new DefaultTableModel(ListBookName,bookList.size());
+		 tableModelBook = new DefaultTableModel(ListBookName,bookList.size());
 		 tableBook = new JTable(tableModelBook);
 		 
 		 showBookList();
@@ -68,7 +67,7 @@ public class BorrowBookForm extends JInternalFrame implements ActionListener {
 		 
 		 cartList = bbh.getCart();
 		 String[] CartListName = {"ID", "Name", "Genre ID", "ISBN", "Qty"};
-		 TableModel tableModelCart = new DefaultTableModel(CartListName,cartList.size());
+		 tableModelCart = new DefaultTableModel(CartListName,cartList.size());
 		 tableCart = new JTable(tableModelCart);
 		 
 		 showCartList();
@@ -109,12 +108,22 @@ public class BorrowBookForm extends JInternalFrame implements ActionListener {
 		 getContentPane().add(pnlList, BorderLayout.CENTER);
 		 getContentPane().add(pnlButton, BorderLayout.SOUTH);
 		
-		 
 	 }
+	 
+	 public void refreshBookTable() {
+		 tableModelBook.setRowCount(0);
+		 showBookList();
+	 }
+	 
+	 public void refreshCartTable() {
+		 tableModelCart.setRowCount(0);
+		 showCartList();
+	 }
+	 
 	 private void showBookList(){
-		
-		
+		bookList = bookH.getAll();
 		int size = bookList.size();
+		tableModelBook.setRowCount(size);
 		for (int i = 0 ; i < size ; i++) {
 			String id = bookList.get(i).getId();
 			String name = bookList.get(i).getName();
@@ -131,8 +140,10 @@ public class BorrowBookForm extends JInternalFrame implements ActionListener {
 	 }
 	 
 	 private void showCartList() {
-			
-		for (int i = 0 ; i < cartList.size() ; i++) {
+		cartList = bbh.getCart();
+		int size = cartList.size();
+		tableModelCart.setRowCount(size);
+		for (int i = 0 ; i < size ; i++) {
 			String id = cartList.get(i).getId();
 			String name = cartList.get(i).getName();
 			String genreId = cartList.get(i).getGenreId();
@@ -155,24 +166,29 @@ public class BorrowBookForm extends JInternalFrame implements ActionListener {
 		 }else if(e.getSource() == addCart) {
 			 int index = tableBook.getSelectedRow();
 				if(index == -1) {
-					new JOptionPane().showMessageDialog(null, "Choose Book You Want Add to Cart!");
+					JOptionPane.showMessageDialog(null, "Choose Book You Want Add to Cart!");
 					return;
 				}
 				else {
-					bbh.addToCart(bookList.get(index));	
+					bbh.addToCart(bookList.get(index));
+					JOptionPane.showMessageDialog(null, "Add to cart success");
+					refreshCartTable();
+					refreshBookTable();
 				}
 		 }else if(e.getSource() == removeCart) {
 			 int index = tableCart.getSelectedRow();
 				if(index == -1) {
-					new JOptionPane().showMessageDialog(null, "Choose Book Do You Want remove!");
+					JOptionPane.showMessageDialog(null, "Choose Book Do You Want remove!");
 					return;
 				}
 				else {
-					int ans = new JOptionPane().showConfirmDialog(null, "Do You Want to Remove This Book?");
+					int ans = JOptionPane.showConfirmDialog(null, "Do You Want to Remove This Book?");
 					 switch(ans){
 				        case JOptionPane.YES_OPTION: 
-				        	tableCart.clearSelection();		
-				        	new JOptionPane().showMessageDialog(null, "Remove Successed !");
+				        	bbh.removeCart(cartList.get(index));
+				        	JOptionPane.showMessageDialog(null, "Remove Success !");
+				        	refreshCartTable();
+							refreshBookTable();
 				            break;
 				        case JOptionPane.NO_OPTION:
 				            break;

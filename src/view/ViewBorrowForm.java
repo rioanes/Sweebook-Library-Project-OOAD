@@ -27,7 +27,7 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 	
 	List<Borrow> borrowList = new ArrayList<Borrow>();
 	List<BorrowItem> bowItemList = new ArrayList<BorrowItem>();
-	
+	BorrowTransactionHandler borrowTH = new BorrowTransactionHandler();
 	JLabel title;
 	
 	DefaultTableModel bowDtm, bookDtm;
@@ -37,6 +37,8 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 	JPanel titlePnl, tblPnl, btnPnl;
 	
 	JButton viewBook;
+
+	boolean isMember;
 	
 	public ViewBorrowForm() {
 		// TODO Auto-generated constructor stub
@@ -50,9 +52,14 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 		titlePnl.add(title);
 		
 		
-		System.out.println("tes1");
+		if(User.getRoleId().compareTo(new RoleHandler().getByName("Membership").getId()) == 0) isMember = true;
+		else isMember = false;
+		
+		borrowList = borrowTH.getPendingStatus(isMember);
+		
 		getBorrowList();
-		System.out.println("tes2");
+		
+		
 		makeItem();
 		System.out.println("tes3");
 		
@@ -67,14 +74,11 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 		add(titlePnl, BorderLayout.NORTH);
 	}
 	
+	public void refreshTable() {
+		bowDtm.setRowCount(0);
+		showBorrowList();
+	}
 	public void getBorrowList() {
-		boolean isMember;
-		
-		if(User.getRoleId().compareTo(new RoleHandler().getByName("Membership").getId()) == 0) isMember = true;
-		else isMember = false;
-		
-		borrowList = new BorrowTransactionHandler().getPendingStatus(isMember);
-		
 		String[] names = {"ID", "Member ID", "Status", "Borrow Time"};
 		
 		bowDtm = new DefaultTableModel(names, borrowList.size());
@@ -85,7 +89,11 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 	}
 	
 	public void showBorrowList() {
-		for (int i = 0; i < borrowList.size(); i++) {
+		borrowList = borrowTH.getPendingStatus(isMember);
+		int size = borrowList.size();
+		bowDtm.setRowCount(size);
+		System.out.println("size " + size);
+		for (int i = 0; i < size; i++) {
 			String id = borrowList.get(i).getId();
 			String memberId = borrowList.get(i).getMemberId();
 			String status = borrowList.get(i).getStatus();
@@ -109,7 +117,7 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 	public void showBook() {
 		int index = bowTbl.getSelectedRow();
 		if(index == -1) {
-			new JOptionPane().showMessageDialog(null, "Please Choose 1 Transaction!");
+			JOptionPane.showMessageDialog(null, "Please Choose 1 Transaction!");
 			return;
 		}
 		
