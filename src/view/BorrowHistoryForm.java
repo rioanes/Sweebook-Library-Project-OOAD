@@ -169,7 +169,7 @@ public class BorrowHistoryForm extends JInternalFrame implements ActionListener 
              inputs.put("bookId", borrowItem.get(index).getBookId());
              long fine = new BorrowTransactionHandler().returnBook(inputs);
              
-             if( fine >= 0) {
+             if( fine > 0) {
             	 String paymentString = null;
             	 long payment = 0;
             	 do {
