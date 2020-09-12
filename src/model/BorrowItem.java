@@ -85,6 +85,7 @@ public class BorrowItem {
 			statement.setString(3, this.bookId);
 		
 			statement.executeUpdate();
+			System.out.println("borrow Item updated");
 				
 		}catch (SQLException ex) {
 			ex.printStackTrace();
@@ -146,7 +147,9 @@ public class BorrowItem {
 				item.setId(rs.getString(1));
 				item.setBookId(rs.getString(2));
 				//cek bisa di convert ke string ato ngga
-				item.setReturnTimestamp(rs.getString(3));		
+				item.setReturnTimestamp(rs.getString(3));
+				
+				items.add(item);
 			}
 				
 		}catch (SQLException ex) {

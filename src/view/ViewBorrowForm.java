@@ -36,7 +36,7 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 	
 	JPanel titlePnl, tblPnl, btnPnl;
 	
-	JButton viewBook;
+	JButton viewBook, acceptButton;
 
 	boolean isMember;
 	
@@ -59,19 +59,25 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 		
 		getBorrowList();
 		
-		
 		makeItem();
 		System.out.println("tes3");
 		
 		tblPnl = new JPanel(new GridLayout(2, 1));
 		tblPnl.add(bowPane);
+		tblPnl.add(bookPane);
 		
-		viewBook = new JButton("View Book List");
+		viewBook = new JButton("View Item");
 		btnPnl = new JPanel();
 		btnPnl.add(viewBook);
 		viewBook.addActionListener(this);
 		
+		acceptButton = new JButton("Accept");
+		btnPnl.add(acceptButton);
+		acceptButton.addActionListener(this);
+		
 		add(titlePnl, BorderLayout.NORTH);
+		add(tblPnl, BorderLayout.CENTER);
+		add(btnPnl, BorderLayout.SOUTH);
 	}
 	
 	public void refreshTable() {
@@ -91,6 +97,7 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 	public void showBorrowList() {
 		borrowList = borrowTH.getPendingStatus(isMember);
 		int size = borrowList.size();
+
 		bowDtm.setRowCount(size);
 		System.out.println("size " + size);
 		for (int i = 0; i < size; i++) {
@@ -107,7 +114,7 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 	}
 	
 	public void makeItem() {
-		String[] names = {"ID", "Book ID", "Return Timestamp"};
+		String[] names = {"ID", "Title", "Return Timestamp"};
 		
 		bookDtm = new DefaultTableModel(names, 0);
 		bookTbl = new JTable(bookDtm);
@@ -121,27 +128,58 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 			return;
 		}
 		
+		bookDtm.setRowCount(0);
 		String curId = borrowList.get(index).getId();
-		bowItemList = new BorrowTransactionHandler().getBookItem(curId);
+		bowItemList = borrowTH.getBookItem(curId);
 		
-		for (int i = 0; i < bowItemList.size(); i++) {
+		int size = bowItemList.size();
+		bookDtm.setRowCount(size);
+		System.out.println("size pending" + size);
+		
+		for (int i = 0; i < size; i++) {
 			String id = bowItemList.get(i).getId();
 			String bookId = bowItemList.get(i).getBookId();
 			String retTime = bowItemList.get(i).getReturnTimestamp();
 			
 			String bookName = new BookHandler().getById(bookId).getName();
 			
-			bookDtm.setValueAt(id, i, 0);
-			bookDtm.setValueAt(bookName, i, 1);
-			bookDtm.setValueAt(retTime, i, 2);
+			bookTbl.setValueAt(id, i, 0);
+			bookTbl.setValueAt(bookName, i, 1);
+			bookTbl.setValueAt(retTime, i, 2);
 		}
 	}
 
+	public void acceptBorrow() {
+		
+		if(User.getRoleId().equals(new RoleHandler().getByName("Administrator").getId()) == false) {
+			JOptionPane.showMessageDialog(null, "You can't do this action!!");
+			return;
+		}
+		
+		int index = bowTbl.getSelectedRow();
+		if(index == -1) {
+			JOptionPane.showMessageDialog(null, "Please Choose 1 Transaction!");
+			return;
+		}
+		
+		if(borrowTH.acceptBorrowRequest(borrowList.get(index).getId())
+				== true) {
+			JOptionPane.showMessageDialog(null, "Accept Success");
+		}else {
+			JOptionPane.showMessageDialog(null, "Accept Failed");
+		}
+		
+		refreshTable();
+		
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource() == viewBook) {
 			showBook();
+		}else if(e.getSource() == acceptButton) {
+			acceptBorrow();
 		}
 	}
 }

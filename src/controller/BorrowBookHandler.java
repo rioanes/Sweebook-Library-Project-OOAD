@@ -37,16 +37,27 @@ public class BorrowBookHandler {
 			return false;
 		}
 		
-		carts.addCart(book);
-		
 		//update quantity
+		HashMap<String, String> inputs = new HashMap<String, String>();
+		inputs.put("isbn", book.getIsbn());
+		inputs.put("genreId", book.getGenreId());
+		inputs.put("quantity", "-1");
+		new BookHandler().update(inputs);
 		
+		book.setQuantity(1);
+		carts.addCart(book);
 		
 		System.out.println("done add to cart");
 		return true;
 	}
 	
 	public boolean removeCart(Book book) {
+		HashMap<String, String> inputs = new HashMap<String, String>();
+		inputs.put("isbn", book.getIsbn());
+		inputs.put("genreId", book.getGenreId());
+		inputs.put("quantity", "1");
+		new BookHandler().update(inputs);
+		
 		carts.removeCart(book);
 		return true;
 	}
@@ -101,7 +112,7 @@ public class BorrowBookHandler {
 			bItem.setReturnTimestamp("");
 			
 			bItem.insert();
-			removeCart(book);
+			carts.removeCart(book);
 		}
 		
 		return true;

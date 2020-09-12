@@ -197,6 +197,7 @@ public class BorrowBookForm extends JInternalFrame implements ActionListener {
 		 }else if(e.getSource() == borrow) {
 			 if(bbh.borrowBook() ) {
 				 JOptionPane.showMessageDialog(null, "Borrow Book Success!!");
+				 refreshCartTable();
 			 }else {
 				 JOptionPane.showMessageDialog(null, "Borrow Book Failed!!");
 				 return;

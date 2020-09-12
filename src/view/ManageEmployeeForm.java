@@ -86,6 +86,11 @@ public class ManageEmployeeForm extends JInternalFrame implements ActionListener
 		accReq = new JButton("Accept");
 		accReq.addActionListener(this);
 		
+		if(User.isRoleManager() == false) {
+			fireEmp.setEnabled(false);
+			accReq.setEnabled(false);
+		}
+		
 		btnPnl = new JPanel(new GridLayout(1, 3));
 		btnPnl.add(addEmp);
 		btnPnl.add(fireEmp);

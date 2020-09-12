@@ -21,7 +21,7 @@ public class ManagerMainView extends JFrame implements ActionListener {
 	
 	ViewMembershipForm viewMemForm;
 	ManageEmployeeForm manEmpForm;
-	ViewBorrowHistoryForm bowHistForm;
+	BorrowHistoryForm bowHistForm;
 	
 	public ManagerMainView() {
 		
@@ -86,7 +86,7 @@ public class ManagerMainView extends JFrame implements ActionListener {
 	
 	public JInternalFrame showBorrowHistoryForm() {
 		remove(photo);
-		bowHistForm = new ViewBorrowHistoryForm();
+		bowHistForm = new BorrowHistoryForm();
 		add(bowHistForm).setSize(340, 335);
 		return bowHistForm;
 	}

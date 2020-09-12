@@ -16,7 +16,7 @@ public class Borrow {
 	private String borrowTimestamp;
 	
 	final String insertString = "INSERT INTO borrows (id,member_id, status, borrow_timestamp) VALUES (?, ?, ?, ?);";
-    final String updateString = "UPDATE borrows SET status=?, WHERE id=? ;";
+    final String updateString = "UPDATE borrows SET status=? WHERE id=? ;";
     final String findIdString = "SELECT * FROM borrows WHERE id=? ;";
     final String countBookString = "SELECT COUNT(*) AS 'total' " + 
     		"FROM borrow_items JOIN borrows " +
@@ -76,10 +76,12 @@ public class Borrow {
 			statement.setString(1, id);
 			ResultSet rs = statement.executeQuery(); //gtw butuh kasi findString ato ga
 			
-			borrow.setId(rs.getString(1));
-			borrow.setMemberId(rs.getString(2));
-			borrow.setStatus(rs.getString(3));
-			borrow.setBorrowTimestamp(rs.getString(4));
+			if(rs.next()) {				
+				borrow.setId(rs.getString(1));
+				borrow.setMemberId(rs.getString(2));
+				borrow.setStatus(rs.getString(3));
+				borrow.setBorrowTimestamp(rs.getString(4));
+			}
 				
 		}catch (SQLException ex) {
 			ex.printStackTrace();
@@ -221,7 +223,7 @@ public class Borrow {
 			if(isOnlyCurrentMember) {
 				query += "AND member_id = ?";
 				statement = connection.prepareStatement(query);
-				statement.setString(1, memberId);
+				statement.setString(1, User.getId());
 			}else {
 				statement = connection.prepareStatement(query);
 			}
@@ -259,15 +261,20 @@ public class Borrow {
 		
 		List<Borrow> borrows = new ArrayList<Borrow>();
 		try {
-			int year = Integer.parseInt(new SimpleDateFormat("yyyy").format(date));
-			int month =Integer.parseInt(new SimpleDateFormat("MM").format(date));
+//			int year = Integer.parseInt(new SimpleDateFormat("yyyy").format(date));
+//			int month =Integer.parseInt(new SimpleDateFormat("MM").format(date));
+			
+			int year = date.getYear();
+			int month = date.getMonth();
+			System.out.println("year = " + year + " month = " + month);
 			if(isOnlyCurrentMember) {
+				
 				query += "AND member_id = ?";
 				
 				statement = connection.prepareStatement(query);
 				statement.setInt(1, month);
 				statement.setInt(2, year);
-				statement.setString(3, memberId);
+				statement.setString(3, User.getId());
 			}else {
 				statement = connection.prepareStatement(query);
 				statement.setInt(1, month);

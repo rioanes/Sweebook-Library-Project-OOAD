@@ -34,8 +34,10 @@ public class BookHandler {
 	public Book insert(HashMap<String,String> inputs) {
 		String id = UUID.randomUUID().toString();
 		Genre genre =  new GenreHandler().getByType(inputs.get("type"));
-		if(genre == null) {
+		if(genre.getId() == null) {
+			
 			genre = new GenreHandler().insert(inputs);
+			
 		}
 		String genreId = genre.getId();
 		
@@ -56,13 +58,15 @@ public class BookHandler {
 		
 		Book book1 = new Book().getByIsbn(inputs.get("isbn"));
 		
-		Genre genre =  new GenreHandler().getByType(inputs.get("type"));
-		if(genre == null) {
-			genre = new GenreHandler().insert(inputs);
+		if(inputs.containsKey("genreId") == false) {
+			Genre genre =  new GenreHandler().getByType(inputs.get("type"));
+			if(genre == null) {
+				genre = new GenreHandler().insert(inputs);
+			}
+			String genreId = genre.getId();				
+			book1.setGenreId(genreId);
 		}
-		String genreId = genre.getId();	
 		
-		book1.setGenreId(genreId);
 		book1.setQuantity(book1.getQuantity() + Integer.parseInt(inputs.get("quantity")));
 		
 		book1 = book1.update();
