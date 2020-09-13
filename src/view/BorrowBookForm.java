@@ -23,17 +23,17 @@ import controller.*;
 import model.*;
 
 public class BorrowBookForm extends JInternalFrame implements ActionListener {
-	 BorrowBookHandler bbh = new BorrowBookHandler();
-	
-	 //list
+	BorrowBookHandler bbh = new BorrowBookHandler();
 	 
+	 //list
+
 	 List<Book> bookList = new ArrayList<Book>();
 	 List<Book> cartList = new ArrayList<Book>();
-	 
+
 	 BookHandler bookH = new BookHandler();
-	 
+
 	 //create ui
-	 
+
 	 DefaultTableModel tableModelBook, tableModelCart;
 	 JTable tbl;
 	 JTable tblCart;
@@ -45,69 +45,68 @@ public class BorrowBookForm extends JInternalFrame implements ActionListener {
 	 JPanel titlePnl;
 	 JPanel titlePnlCart;
 	 JTable tableBook,tableCart;
-	 
+
+
+
 	 public BorrowBookForm() {
 		 setVisible(true);
 		 setSize(340, 335);
 		 setLocation(225, 10);
 		 setClosable(true);
- 
-		 title = new JLabel("Book List");
-		 		  
+
 		 //book list
 		 bookList = bookH.getAll();
-		 String[] ListBookName = {"ID", "Name", "Genre ID", "ISBN", "Qty"};
-		 tableModelBook = new DefaultTableModel(ListBookName,bookList.size());
+
+		 String[] names = {"ID", "Name", "Genre ID", "ISBN", "Qty"};
+		 tableModelBook = new DefaultTableModel(names, bookList.size());
 		 tableBook = new JTable(tableModelBook);
-		 
+		 sPane = new JScrollPane(tableBook);
+
 		 showBookList();
-		 
+
 		 //cart List
-		 titleCart = new JLabel("Cart List");
-		 
 		 cartList = bbh.getCart();
-		 String[] CartListName = {"ID", "Name", "Genre ID", "ISBN", "Qty"};
-		 tableModelCart = new DefaultTableModel(CartListName,cartList.size());
+
+		 String[] namesCart = {"ID", "Name", "Genre ID", "ISBN", "Qty"};
+
+		 tableModelCart = new DefaultTableModel(namesCart, cartList.size());
 		 tableCart = new JTable(tableModelCart);
-		 
+		 sPaneCart = new JScrollPane(tableCart);		 
+
 		 showCartList();
-		 
+
 		 //button
 //		 close = new JButton("Close");
 		 borrow = new JButton("Borrow");
 		 addCart = new JButton("add to cart");
 		 removeCart = new JButton("remove from cart");
-		 
+
 		 borrow.addActionListener(this);
 		 addCart.addActionListener(this);
 		 removeCart.addActionListener(this);
-		 
-		 JPanel pnlListBook = new JPanel(new GridLayout(2,1));
-		 pnlListBook.setBorder(BorderFactory.createTitledBorder(
-			      BorderFactory.createEtchedBorder(), "Book List", TitledBorder.LEFT,
-			      TitledBorder.TOP));
-		 pnlListBook.add(new JScrollPane(tableBook));
-		 
-		 JPanel pnlListCart = new JPanel(new GridLayout(2,1));
-		 pnlListCart.add(new JScrollPane(tableCart));
-		 pnlListCart.setBorder(BorderFactory.createTitledBorder(
-			      BorderFactory.createEtchedBorder(), "Cart List", TitledBorder.LEFT,
-			      TitledBorder.TOP));
-		 
+
+		 JPanel pnlBook = new JPanel(new BorderLayout());
+		 pnlBook.add(new JLabel("Book List"), BorderLayout.NORTH);
+		 pnlBook.add(sPane, BorderLayout.CENTER);
+
+		 JPanel pnlCart = new JPanel(new BorderLayout());
+		 pnlCart.add(new JLabel("Cart List"), BorderLayout.NORTH);
+		 pnlCart.add(sPaneCart, BorderLayout.CENTER);
+
 		 JPanel pnlList = new JPanel(new GridLayout(2,1));
-		 pnlList.add(pnlListBook);
-		 pnlList.add(pnlListCart);
-		 
-		 
+		 pnlList.add(pnlBook);
+		 pnlList.add(pnlCart);
+
 		 JPanel pnlButton = new JPanel(new FlowLayout());
 //		 pnlButton.add(close);
 		 pnlButton.add(borrow);
 		 pnlButton.add(addCart);
 		 pnlButton.add(removeCart);
-	  
+
 		 getContentPane().add(pnlList, BorderLayout.CENTER);
 		 getContentPane().add(pnlButton, BorderLayout.SOUTH);
-		
+
+
 	 }
 	 
 	 public void refreshBookTable() {
@@ -170,10 +169,11 @@ public class BorrowBookForm extends JInternalFrame implements ActionListener {
 					return;
 				}
 				else {
-					bbh.addToCart(bookList.get(index));
-					JOptionPane.showMessageDialog(null, "Add to cart success");
-					refreshCartTable();
-					refreshBookTable();
+					if(bbh.addToCart(bookList.get(index)) ) {						
+						JOptionPane.showMessageDialog(null, "Add to cart success");
+						refreshCartTable();
+						refreshBookTable();
+					}
 				}
 		 }else if(e.getSource() == removeCart) {
 			 int index = tableCart.getSelectedRow();
@@ -198,9 +198,6 @@ public class BorrowBookForm extends JInternalFrame implements ActionListener {
 			 if(bbh.borrowBook() ) {
 				 JOptionPane.showMessageDialog(null, "Borrow Book Success!!");
 				 refreshCartTable();
-			 }else {
-				 JOptionPane.showMessageDialog(null, "Borrow Book Failed!!");
-				 return;
 			 }
 			 
 		 }

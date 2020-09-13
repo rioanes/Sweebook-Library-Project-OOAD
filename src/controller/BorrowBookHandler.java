@@ -34,6 +34,12 @@ public class BorrowBookHandler {
 		
 		if(carts.isAlreadyExist(book)) {
 			System.out.println("book already in cart");
+			JOptionPane.showMessageDialog(null, "Book already in cart!");
+			return false;
+		}
+		
+		if(book.getQuantity() <= 0) {
+			JOptionPane.showMessageDialog(null, "No books left");
 			return false;
 		}
 		
@@ -76,7 +82,7 @@ public class BorrowBookHandler {
 		
 		if(countBook > 10) {
 			//books can't be more than 10
-			System.out.println("book more than 10!!");
+			JOptionPane.showMessageDialog(null, "Can't borrow more than 10 books!!");
 			return false;
 		}
 		
@@ -87,7 +93,7 @@ public class BorrowBookHandler {
 			boolean cek = new Borrow().isBookStillBorrowing(User.getId(), book.getId());
 			if(cek == true) {
 				//print error message
-				System.out.println("can't be the same book!");
+				JOptionPane.showMessageDialog(null, "Can't borrow the same book!!");
 				return false;
 			}
 		}

@@ -11,13 +11,15 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 
+import main.FirstMenuView;
+
 public class ManagerMainView extends JFrame implements ActionListener {
 	
 	ImageIcon image = new ImageIcon("aaa.png");
 	
 	JLabel photo;
 	
-	JButton viewMember, viewEmployee, viewBowHist;
+	JButton viewMember, viewEmployee, viewBowHist, logOut;
 	
 	ViewMembershipForm viewMemForm;
 	ManageEmployeeForm manEmpForm;
@@ -42,7 +44,7 @@ public class ManagerMainView extends JFrame implements ActionListener {
 		
 		viewMember = new JButton("View Membership");
 		viewMember.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		viewMember.setBounds(20, 80, 130, 41);
+		viewMember.setBounds(20, 60, 130, 41);
 		getContentPane().add(viewMember);
 		viewMember.addActionListener(this);
 		
@@ -50,7 +52,7 @@ public class ManagerMainView extends JFrame implements ActionListener {
 		
 		viewEmployee = new JButton("View Employee");
 		viewEmployee.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		viewEmployee.setBounds(20, 180, 130, 41);
+		viewEmployee.setBounds(20, 140, 130, 41);
 		getContentPane().add(viewEmployee);
 		viewEmployee.addActionListener(this);
 		
@@ -58,9 +60,17 @@ public class ManagerMainView extends JFrame implements ActionListener {
 		
 		viewBowHist = new JButton("Borrow History");
 		viewBowHist.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		viewBowHist.setBounds(20, 280, 130, 41);
+		viewBowHist.setBounds(20, 220, 130, 41);
 		getContentPane().add(viewBowHist);
 		viewBowHist.addActionListener(this);
+		
+		//Log Out
+		 
+		logOut = new JButton("Log Out");
+		logOut.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		logOut.setBounds(20, 300, 130, 41);
+		getContentPane().add(logOut);
+		logOut.addActionListener(this);
 		
 		//Photo
 		
@@ -70,27 +80,58 @@ public class ManagerMainView extends JFrame implements ActionListener {
 		photo.setIcon(image);
 	}
 	
-	public JInternalFrame showViewMembershipForm() {
-		remove(photo);
-		viewMemForm = new ViewMembershipForm();
-		add(viewMemForm).setSize(340,335);
-		return viewMemForm;
+	public void showViewMembershipForm() {
+		if(viewMemForm == null || viewMemForm.isVisible() == false) {
+	    	 if(manEmpForm != null) manEmpForm.dispose();
+	    	 if(bowHistForm != null) bowHistForm.dispose();
+	    	 
+	    	 viewMemForm = new ViewMembershipForm();
+	    	 add(viewMemForm).setSize(340,335);
+	    	 remove(photo);
+	     }else {
+	    	 viewMemForm.dispose();
+	    	 getContentPane().add(photo);
+	     }
+		
+		
 	}
 	
-	public JInternalFrame showManageEmployeeForm() {
-		remove(photo);
-		manEmpForm = new ManageEmployeeForm();
-		add(manEmpForm).setSize(340, 335);
-		return manEmpForm;
+	public void showManageEmployeeForm() {
+		if(manEmpForm == null || manEmpForm.isVisible() == false) {
+	    	 if(viewMemForm != null) viewMemForm.dispose();
+	    	 if(bowHistForm != null) bowHistForm.dispose();
+	    	 
+	    	 manEmpForm = new ManageEmployeeForm();
+	    	 add(manEmpForm).setSize(340, 335);
+	    	 remove(photo);
+	     }else {
+	    	 manEmpForm.dispose();
+	    	 getContentPane().add(photo);
+	     }
+		
 	}
 	
-	public JInternalFrame showBorrowHistoryForm() {
-		remove(photo);
-		bowHistForm = new BorrowHistoryForm();
-		add(bowHistForm).setSize(340, 335);
-		return bowHistForm;
+	public void showBorrowHistoryForm() {
+		if(bowHistForm == null || bowHistForm.isVisible() == false) {
+	    	 if(viewMemForm != null) viewMemForm.dispose();
+	    	 if(manEmpForm != null) manEmpForm.dispose();
+	    	 
+	    	 bowHistForm = new BorrowHistoryForm();
+	    	 add(bowHistForm).setSize(340, 335);
+	    	 remove(photo);
+	     }else {
+	    	 bowHistForm.dispose();
+	    	 getContentPane().add(photo);
+	     }
+		
 	}
-
+	
+	public void logout() {
+		 this.dispose();
+		 FirstMenuView fmv = new FirstMenuView();
+		 fmv.setVisible(true);
+	 }
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -102,7 +143,9 @@ public class ManagerMainView extends JFrame implements ActionListener {
 		}
 		else if(e.getSource() == viewBowHist) {
 			showBorrowHistoryForm();
+		}else if(e.getSource() == logOut) {
+			logout();
 		}
-		getContentPane().add(photo);
+		
 	}
 }

@@ -21,6 +21,8 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 	MemberHandler member = new MemberHandler();
 	FirstMenuView menu;
 	
+	JButton backButton;
+	
 	public CreateMembershipForm() {
 		setTitle("Register Form");
 		setSize(600,400);
@@ -44,7 +46,8 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 		//gender
 		JLabel lblGender = new JLabel("Gender");
 		lblGender.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			//grouping
+		
+		//grouping
 		ButtonGroup group = new ButtonGroup();
 		JRadioButton rbMale = new JRadioButton("Male");
 		rbMale.setActionCommand("Male");
@@ -52,12 +55,13 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 		rbFemale.setActionCommand("Female");
 		group.add(rbFemale);
 		group.add(rbMale);
+		rbMale.setSelected(true);
 		
 		//address
 		JLabel lblAddress = new JLabel("Address");
 		lblAddress.setBounds(10, 203, 60, 14);
 		lblAddress.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			//scroll
+		//scroll
 		txtAddress = new JTextArea();
 		JScrollPane spAddress = new JScrollPane(txtAddress);
 		
@@ -71,10 +75,18 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 		lblConfirmPassword.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtConfirmPassword = new JPasswordField();
 		
+		//back
+		
+		backButton = new JButton("Back");
+		backButton.setBounds(160, 300, 100, 40);
+		getContentPane().add(backButton);
+		backButton.addActionListener(this);
+		
 		//create
 		JButton create = new JButton("create");
 		create.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		create.setSize(20, 20);
+		create.setBounds(320, 300, 100, 40);
+		getContentPane().add(create);
 		create.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -143,7 +155,6 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 		panel.add(title, BorderLayout.NORTH);
 		panel.add(pnlWithAgree, BorderLayout.CENTER);
 		panel.add(pnlForm, BorderLayout.CENTER);
-		panel.add(create, BorderLayout.SOUTH);
 		add(panel);
 	}
 	
@@ -154,9 +165,18 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 		return menu;
 	}
 	
+	public JFrame goBack() {
+		this.dispose();
+		FirstMenuView fmv = new FirstMenuView();
+		fmv.setVisible(true);
+		return fmv;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		if(e.getSource() == backButton) {
+			goBack();
+		}
 	}
 }

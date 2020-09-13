@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 import model.User;
 import controller.*;
+import main.FirstMenuView;
 
 
 public class LogInView extends JFrame implements ActionListener {
@@ -26,7 +27,7 @@ public class LogInView extends JFrame implements ActionListener {
 	
 	JPasswordField txtPassword;
 	
-	JButton logInButton;
+	JButton logInButton, backButton;
 	
 	String username, password;
 	
@@ -65,10 +66,22 @@ public class LogInView extends JFrame implements ActionListener {
 		username = txtUsername.getText();
 		password = String.valueOf(txtPassword.getPassword());
 		
+		
+		backButton = new JButton("Back");
+		backButton.setBounds(160, 300, 100, 40);
+		getContentPane().add(backButton);
+		backButton.addActionListener(this);
+		
 		logInButton = new JButton("Log In");
-		logInButton.setBounds(235, 300, 100, 40);
+		logInButton.setBounds(320, 300, 100, 40);
 		getContentPane().add(logInButton);
 		logInButton.addActionListener(this);
+	}
+	
+	public void goBack() {
+		this.dispose();
+		FirstMenuView fmv = new FirstMenuView();
+		fmv.setVisible(true);
 	}
 
 	@Override
@@ -117,6 +130,9 @@ public class LogInView extends JFrame implements ActionListener {
 				PurchasingMainView purchaseView = new PurchasingMainView();
 				purchaseView.setVisible(true);
 			}
+		}
+		else if(e.getSource() == backButton) {
+			goBack();
 		}
 	}
 }

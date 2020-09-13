@@ -26,7 +26,7 @@ public class Borrow {
     		"SELECT COUNT(*) AS 'total' " + 
     		"FROM borrow_items JOIN borrows " +
     		"ON borrow_items.borrow_id = borrows.id " + 
-    		"WHERE borrows.member_id = ? AND borrow_items.book_id = ? ";
+    		"WHERE borrows.member_id = ? AND borrow_items.book_id = ? AND borrow_items.return_timestamp IS NULL";
     
 	//constructor
 	public Borrow() {

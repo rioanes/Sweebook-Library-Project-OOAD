@@ -60,7 +60,6 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 		getBorrowList();
 		
 		makeItem();
-		System.out.println("tes3");
 		
 		tblPnl = new JPanel(new GridLayout(2, 1));
 		tblPnl.add(bowPane);
@@ -74,6 +73,10 @@ public class ViewBorrowForm extends JInternalFrame implements ActionListener {
 		acceptButton = new JButton("Accept");
 		btnPnl.add(acceptButton);
 		acceptButton.addActionListener(this);
+		if(User.isRoleAdministrator() == false) {
+			acceptButton.setEnabled(false);
+		}
+		
 		
 		add(titlePnl, BorderLayout.NORTH);
 		add(tblPnl, BorderLayout.CENTER);

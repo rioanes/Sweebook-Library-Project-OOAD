@@ -10,18 +10,20 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 
+import main.FirstMenuView;
+
 public class AdministratorMainView extends JFrame implements ActionListener {
 	
 	ImageIcon image = new ImageIcon("aaa.png");
 	
 	JLabel photo;
 	
-	JButton viewBook, viewPendBowBook, viewMember, viewBowHist;
+	JButton viewBook, viewPendBowBook, viewMember, viewBowHist, logOut;
 	
 	ViewBookForm viewBookForm;
 	ViewBorrowForm viewBowForm;
 	ViewMembershipForm viewMemForm;
-	ViewBorrowHistoryForm bowHistForm;
+	BorrowHistoryForm bowHistForm;
 	
 	public AdministratorMainView() {
 		// TODO Auto-generated constructor stub
@@ -50,7 +52,7 @@ public class AdministratorMainView extends JFrame implements ActionListener {
 		
 		viewPendBowBook = new JButton("View Pending Borrow Book");
 		viewPendBowBook.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		viewPendBowBook.setBounds(20, 140, 130, 41);
+		viewPendBowBook.setBounds(20, 120, 130, 41);
 		getContentPane().add(viewPendBowBook);
 		viewPendBowBook.addActionListener(this);
 		
@@ -58,7 +60,7 @@ public class AdministratorMainView extends JFrame implements ActionListener {
 		
 		viewMember = new JButton("View Membership");
 		viewMember.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		viewMember.setBounds(20, 220, 130, 41);
+		viewMember.setBounds(20, 180, 130, 41);
 		getContentPane().add(viewMember);
 		viewMember.addActionListener(this);
 		
@@ -66,9 +68,17 @@ public class AdministratorMainView extends JFrame implements ActionListener {
 		
 		viewBowHist = new JButton("Borrow History");
 		viewBowHist.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		viewBowHist.setBounds(20, 300, 130, 41);
+		viewBowHist.setBounds(20, 240, 130, 41);
 		getContentPane().add(viewBowHist);
 		viewBowHist.addActionListener(this);
+		
+		//Log Out
+		 
+		logOut = new JButton("Log Out");
+		logOut.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		logOut.setBounds(20, 300, 130, 41);
+		getContentPane().add(logOut);
+		logOut.addActionListener(this);
 		
 		//Photo
 		
@@ -78,33 +88,76 @@ public class AdministratorMainView extends JFrame implements ActionListener {
 		photo.setIcon(image);
 	}
 	
-	public JInternalFrame showViewBookForm() {
-		remove(photo);
-		viewBookForm = new ViewBookForm();
-		add(viewBookForm).setSize(340, 335);
-		return viewBookForm;
+	public void showViewBookForm() {
+		if(viewBookForm == null || viewBookForm.isVisible() == false) {
+	    	 if(viewBowForm != null) viewBowForm.dispose();
+	    	 if(viewMemForm != null) viewMemForm.dispose();
+	    	 if(bowHistForm != null) bowHistForm.dispose();
+	    	 
+	    	 viewBookForm = new ViewBookForm();
+	    	 add(viewBookForm).setSize(340, 335);
+	    	 remove(photo);
+	    	 
+	     }else {
+	    	 viewBookForm.dispose();
+	    	 getContentPane().add(photo);
+	     }
+		
 	}
 	
-	public JInternalFrame showViewBorrowForm() {
-		remove(photo);
-		viewBowForm = new ViewBorrowForm();
-		add(viewBowForm).setSize(340, 335);
-		return viewBowForm;
+	public void showViewBorrowForm() {
+		if(viewBowForm == null || viewBowForm.isVisible() == false) {
+			if(viewBookForm != null) viewBookForm.dispose();
+	    	if(viewMemForm != null) viewMemForm.dispose();
+	    	if(bowHistForm != null) bowHistForm.dispose();
+	    	 
+	    	viewBowForm = new ViewBorrowForm();
+			add(viewBowForm).setSize(340, 335);
+			remove(photo);
+	    }else {
+	    	viewBowForm.dispose();
+	    	getContentPane().add(photo);
+	    }
+		
 	}
 	
-	public JInternalFrame showViewMembershipForm() {
-		remove(photo);
-		viewMemForm = new ViewMembershipForm();
-		add(viewMemForm).setSize(340, 335);
-		return viewMemForm;
+	public void showViewMembershipForm() {
+		if(viewMemForm == null || viewMemForm.isVisible() == false) {
+			if(viewBookForm != null) viewBookForm.dispose();
+	    	if(viewBowForm != null) viewBowForm.dispose();
+	    	if(bowHistForm != null) bowHistForm.dispose();
+	    	 
+	    	viewMemForm = new ViewMembershipForm();
+			add(viewMemForm).setSize(340, 335);
+			remove(photo);
+	    }else {
+	    	viewMemForm.dispose();
+	    	getContentPane().add(photo);
+	    }
+		
 	}
 	
-	public JInternalFrame showBorrowHistoryForm() {
-		remove(photo);
-		bowHistForm = new ViewBorrowHistoryForm();
-		add(bowHistForm).setSize(340, 335);
-		return bowHistForm;
+	public void showBorrowHistoryForm() {
+		if(bowHistForm == null || bowHistForm.isVisible() == false) {
+			if(viewBookForm != null) viewBookForm.dispose();
+	    	if(viewBowForm != null) viewBowForm.dispose();
+	    	if(viewMemForm != null) viewMemForm.dispose();
+	    	 
+	    	bowHistForm = new BorrowHistoryForm();
+			add(bowHistForm).setSize(340, 335);
+			remove(photo);
+	    }else {
+	    	bowHistForm.dispose();
+	    	getContentPane().add(photo);
+	    }
+		
 	}
+	
+	public void logout() {
+		 this.dispose();
+		 FirstMenuView fmv = new FirstMenuView();
+		 fmv.setVisible(true);
+	 }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -121,6 +174,9 @@ public class AdministratorMainView extends JFrame implements ActionListener {
 		else if(e.getSource() == viewBowHist) {
 			showBorrowHistoryForm();
 		}
-		getContentPane().add(photo);
+		else if(e.getSource() == logOut) {
+			logout();
+		}
+		
 	}
 }

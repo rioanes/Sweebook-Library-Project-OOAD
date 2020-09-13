@@ -3,30 +3,23 @@ package view;
 import java.awt.Font;
 
 import javax.swing.*;
+
+import main.FirstMenuView;
+
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.awt.event.ActionEvent;
 
 public class PurchasingMainView extends JFrame implements ActionListener{
+	ImageIcon image = new ImageIcon("aaa.png");
 	JLabel photo,title;
-	JButton viewBook,manage , deleteBook, btnManageGenre; 
+	JButton viewBook,manage , deleteBook, btnManageGenre, logOut; 
 	
 	ViewBookForm view ;
 	ManageBookForm manageBook ;
 	ManageGenreForm manageGenre ;
 	
 	public PurchasingMainView() {
-		view = new ViewBookForm();
-		manageBook = new ManageBookForm();
-		manageGenre = new ManageGenreForm();
-		
-		view.setVisible(false);
-		manageBook.setVisible(false);
-		manageGenre.setVisible(false);
-		
-		add(view);
-		add(manageBook);
-		add(manageGenre);
 		
 		setTitle("Purchasing Main Menu");
 		setSize(600,400);
@@ -42,14 +35,14 @@ public class PurchasingMainView extends JFrame implements ActionListener{
 		
 		//view book
 		viewBook = new JButton("View Book");
-		viewBook.setBounds(20, 120, 130, 41);
+		viewBook.setBounds(20, 87, 130, 41);
 		viewBook.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		getContentPane().add(viewBook);
 		viewBook.addActionListener(this);
 		
 		//Manage book
 		manage = new JButton("Manage Book");
-		manage.setBounds(20, 186, 130, 41);
+		manage.setBounds(20, 149, 130, 41);
 		manage.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		getContentPane().add(manage);
 		manage.addActionListener(this);
@@ -57,65 +50,73 @@ public class PurchasingMainView extends JFrame implements ActionListener{
 		//manage genre
 		btnManageGenre = new JButton("Manage Genre");
 		btnManageGenre.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnManageGenre.setBounds(20, 250, 130, 41);
+		btnManageGenre.setBounds(20, 211, 130, 41);
 		getContentPane().add(btnManageGenre);
 		btnManageGenre.addActionListener(this);
-
-		add_photo();
-	}
-	
-	public void add_photo() {
-		//photo
+		
+		logOut = new JButton("Log Out");
+		logOut.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		logOut.setBounds(20, 275, 130, 41);
+		getContentPane().add(logOut);
+		logOut.addActionListener(this);
+		
+		//Photo
+		
 		photo = new JLabel("New label");
 		photo.setBounds(245, 65, 284, 240);
 		getContentPane().add(photo);
-		photo.setIcon(new ImageIcon("C:\\rio\\cawu 3.2\\2) Object Oriented Analysis & Design\\7) Project\\Sweebook-Library-Project-OOAD\\aaa.png"));
-				
+		photo.setIcon(image);
 	}
 	
-	
-	public JInternalFrame ViewBookForm() {
-		if(view.isVisible() == true) {
-			view.dispose();
-		}else {
-			manageBook.dispose();
-			manageGenre.dispose();
+	public void ViewBookForm() {
+		if(view == null || view.isVisible() == false)  {
+			if( manageBook != null) manageBook.dispose();
+			if(manageGenre != null) manageGenre.dispose();
 			
 			view = new ViewBookForm();
-			add(view);
+			add(view).setSize(340, 335);
+			remove(photo);
+		}else{
+			view.dispose();
+			getContentPane().add(photo);
 		}
 	   
-	    return view;
 	}
 	 
-	public JInternalFrame ManageBookForm() {
-		if(manageBook.isVisible() == true) {
-			manageBook.dispose();
-		}else {
-			view.dispose();
-			manageGenre.dispose();
+	public void ManageBookForm() {
+		if(manageBook == null || manageBook.isVisible() == false){
+			if( view != null) view.dispose();
+			if( manageGenre != null) manageGenre.dispose();
 			
 			manageBook = new ManageBookForm();
-			add(manageBook);
-			
+			add(manageBook).setSize(340, 335);
+			remove(photo);
+		}else {
+			manageBook.dispose();
+			getContentPane().add(photo);
 		}
-	    return manageBook;
 	}
 	 
-	public JInternalFrame ManageGenreForm() {
-		if(manageGenre.isVisible() == true) {
-			manageGenre.dispose();
-		}else {
-			view.dispose();
-			manageBook.dispose();
+	public void ManageGenreForm() {
+		if(manageGenre == null || manageGenre.isVisible() == false){
+			if( view != null) view.dispose();
+			if( manageBook != null) manageBook.dispose();
 			
 			manageGenre = new ManageGenreForm();
-			add(manageGenre);
-			
+			add(manageGenre).setSize(340, 335);
+			remove(photo);
+		}else  {
+			manageGenre.dispose();
+			getContentPane().add(photo);
 		}
-		 
-		return manageGenre;
 	}
+	
+	public void logout() {
+		 this.dispose();
+		 FirstMenuView fmv = new FirstMenuView();
+		 fmv.setVisible(true);
+		
+	 }
 	 
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource() == viewBook) {
@@ -127,6 +128,9 @@ public class PurchasingMainView extends JFrame implements ActionListener{
 	    else if(e.getSource() == btnManageGenre) {
 	    	ManageGenreForm();
 	    }
-		getContentPane().add(photo);
+	    else if(e.getSource() == logOut) {
+			logout();
+		}
+		
 	}
 }

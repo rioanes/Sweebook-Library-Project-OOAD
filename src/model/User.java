@@ -87,6 +87,13 @@ public class User {
 		return false;
 	}
 	
+	public static boolean isRoleAdministrator() {
+		String adminId = new RoleHandler().getByName("Administrator").getId();
+		if(adminId.equals(User.getRoleId()) == true) 
+			return true;
+		return false;
+	}
+	
 	public User insert() {
 		Connection connection = Connect.connect();
 		PreparedStatement statement = null;
