@@ -26,12 +26,11 @@ public class MemberHandler {
 		member.setId(inputs.get("id"));
 		member.setAddress(inputs.get("address"));
 		
-		System.out.println("date");
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
 		LocalDateTime now = LocalDateTime.now();
 		String memberSince = dtf.format(now).toString();
 		member.setMemberSince(memberSince);
-		System.out.println("insert");
+		
 		return member.insert();
 	}
 	
@@ -43,10 +42,11 @@ public class MemberHandler {
 		inputs.put("roleId", roleId);
 		
 		//insert ke user
-		System.out.println("mau input ke user");
+		
 		new UserHandler().insert(inputs);
-		System.out.println("ni ke member");
-		return insert(inputs);
+		Member member = insert(inputs);
+		JOptionPane.showMessageDialog(null, "Create Membership Success!!");
+		return member;
 		
 	}
 }

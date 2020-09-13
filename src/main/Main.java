@@ -19,22 +19,10 @@ import view.MemberMainView;
 public class Main extends JFrame {
 
 	 public Main() {
-//		 MemberMainView mmv = new MemberMainView();
-//		 mmv.setVisible(true);
-		 
-//		 ManagerMainView mmv = new ManagerMainView();
-//		 mmv.setVisible(true);
-//		 
+
 		 FirstMenuView fmv = new FirstMenuView();
 		 fmv.setVisible(true);
-		 
-//		 LogInView login = new LogInView();
-//		 login.setVisible(true);
-//		 
-//		 CreateMembershipForm cmf = new CreateMembershipForm();
-//		 cmf.setVisible(true);
-//		 
-		 
+
 	 }
 	 
 	 public static void main(String[] args) {

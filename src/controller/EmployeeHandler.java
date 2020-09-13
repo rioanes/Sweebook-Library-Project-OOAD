@@ -19,6 +19,7 @@ public class EmployeeHandler {
 	}
 	
 	public Employee insert(HashMap<String, String> inputs) {
+		//create employee
 		String id = UUID.randomUUID().toString();
 		inputs.put("id", id);
 		Employee employee = new Employee(id,Integer.parseInt(inputs.get("salary")),inputs.get("status"));

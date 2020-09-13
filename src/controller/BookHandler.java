@@ -32,7 +32,10 @@ public class BookHandler {
 	}
 	
 	public Book insert(HashMap<String,String> inputs) {
+		//create id
 		String id = UUID.randomUUID().toString();
+		
+		//check genre
 		Genre genre =  new GenreHandler().getByType(inputs.get("type"));
 		if(genre.getId() == null) {
 			
@@ -41,6 +44,7 @@ public class BookHandler {
 		}
 		String genreId = genre.getId();
 		
+		//create book
 		Book book = new Book();
 		book.setId(id);
 		book.setGenreId(genreId);
@@ -78,6 +82,7 @@ public class BookHandler {
 		Book book1 = new Book();
 		book1 = book1.getByIsbn(inputs.get("isbn"));
 		
+		//validate
 		if(book1.getIsbn() == null) {
 			insert(inputs);
 		}else {
@@ -90,6 +95,7 @@ public class BookHandler {
 	public boolean delete(String id) {
 		Book book1 = new Book();
 		
+		//find book
 		book1 = book1.find(id);
 		if(book1 == null) {
 			JOptionPane.showMessageDialog(null, "Delete Failed!");

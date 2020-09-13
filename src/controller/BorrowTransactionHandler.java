@@ -33,8 +33,6 @@ public class BorrowTransactionHandler {
 	
 	public boolean acceptBorrowRequest(String id) {
 		Borrow borrow = new Borrow().find(id);
-		System.out.println("parameter id " + id);
-		System.out.println("borrow id " +borrow.getId());
 		borrow.setStatus("accept");
 		try {
 			borrow.update();
@@ -60,7 +58,6 @@ public class BorrowTransactionHandler {
 		String returnTimestamp = dtf.format(returnDate).toString();
 		
 		item.setReturnTimestamp(returnTimestamp);
-		System.out.println(item.getId() + " " + item.getBookId() + " " + item.getReturnTimestamp());
 		item.update();
 		
 		//Get Book Data
@@ -76,22 +73,18 @@ public class BorrowTransactionHandler {
 		
 		//Calculate Fine
 		Borrow borrow = new Borrow().find(item.getId());
-		java.sql.Timestamp borrowTs = java.sql.Timestamp.valueOf(borrow.getBorrowTimestamp());
-		System.out.println(borrowTs);
 		
+		java.sql.Timestamp borrowTs = java.sql.Timestamp.valueOf(borrow.getBorrowTimestamp());
 		java.sql.Timestamp returnTs = java.sql.Timestamp.valueOf(returnDate);
-		System.out.println(returnTs);
 		
 		long diff = returnTs.getTime() - borrowTs.getTime();
 		diff = diff / 1000 / 60 / 60 / 24;
-		System.out.println(diff);
 		long fine = 0;
 		if(diff > 14) {
 			diff -= 14;
 			fine = diff * 1000;
 		}
 		
-		System.out.println(fine);
 		return fine;
 	}
 }

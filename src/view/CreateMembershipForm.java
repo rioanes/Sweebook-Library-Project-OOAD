@@ -19,7 +19,6 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 	private JPasswordField txtConfirmPassword;
 	
 	MemberHandler member = new MemberHandler();
-	FirstMenuView menu;
 	
 	JButton backButton;
 	
@@ -90,29 +89,29 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 		create.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("button dipencet");
+				
 				String name = txtName.getText();
 				String userName = txtUserName.getText();
-				System.out.println("sblm gender");
+				
 				String gender = group.getSelection().getActionCommand();
-				System.out.println("stelah gender");
+				
 				String address = txtAddress.getText();
 				String pass = txtPassword.getText();
 				String confPass = txtConfirmPassword.getText();
 				
 				System.out.println(gender);
-				System.out.println("mo validasi");
+				
 				
 				if(name.length()<1 || userName.length()<1 || address.length()<1
 						|| pass.length()<1 || confPass.length()<1
 						|| gender == null) {
-					new JOptionPane().showMessageDialog(null, "please complete data");
+					JOptionPane.showMessageDialog(null, "please complete data");
 					return;
 				}
 				else if(!(pass.equals(confPass))) {
 					System.out.println(pass);
 					System.out.println(confPass);
-					new JOptionPane().showMessageDialog(null, "Please input the same password");
+					JOptionPane.showMessageDialog(null, "Please input the same password");
 					return;
 				}
 				HashMap<String,String> inputs = new HashMap<String,String>();
@@ -124,11 +123,8 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 				System.out.println("sblm");
 				member.createMembership(inputs);
 				
-				viewMenuForm();
 			}
 		});
-		
-		//txtAddress.setPreferredSize(new Dimension(400,150));
 		
 		JPanel pnlGender = new JPanel(new GridLayout(1,2));
 		pnlGender.add(rbMale);
@@ -157,19 +153,11 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 		panel.add(pnlForm, BorderLayout.CENTER);
 		add(panel);
 	}
-	
-	public JFrame viewMenuForm() {
-		this.dispose();
-		menu = new FirstMenuView();
-		menu.setVisible(true);
-		return menu;
-	}
-	
-	public JFrame goBack() {
+
+	public void goBack() {
 		this.dispose();
 		FirstMenuView fmv = new FirstMenuView();
 		fmv.setVisible(true);
-		return fmv;
 	}
 	
 	@Override

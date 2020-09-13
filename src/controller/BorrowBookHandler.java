@@ -17,11 +17,9 @@ public class BorrowBookHandler {
 	}
 	
 	public List<Book> getCart() {
-		System.out.println("inside getCart");
 		List<Book> books = new ArrayList<Book>();
 		books.addAll(carts.getCart());
 		
-		System.out.println("after getcart");
 		return books;
 	}
 	
@@ -30,14 +28,12 @@ public class BorrowBookHandler {
 	}
 	
 	public boolean addToCart(Book book) {
-		System.out.println("add to cart");
 		
+		//validate
 		if(carts.isAlreadyExist(book)) {
-			System.out.println("book already in cart");
 			JOptionPane.showMessageDialog(null, "Book already in cart!");
 			return false;
 		}
-		
 		if(book.getQuantity() <= 0) {
 			JOptionPane.showMessageDialog(null, "No books left");
 			return false;
@@ -53,11 +49,12 @@ public class BorrowBookHandler {
 		book.setQuantity(1);
 		carts.addCart(book);
 		
-		System.out.println("done add to cart");
 		return true;
 	}
 	
 	public boolean removeCart(Book book) {
+		
+		//update quantity
 		HashMap<String, String> inputs = new HashMap<String, String>();
 		inputs.put("isbn", book.getIsbn());
 		inputs.put("genreId", book.getGenreId());
@@ -69,12 +66,13 @@ public class BorrowBookHandler {
 	}
 	
 	public boolean borrowBook() {
-		//validasi buku yg boleh di borrow maks 10 termasuk yg udah dipinjem
+		//validate
 		Borrow borrowModel = new Borrow();
 		int countBook = borrowModel.getCountBookStillBorrowing(User.getId());
 		
 		if(getCart().size() == 0) {
-			System.out.println("no book in cart");
+			//check cart size
+			JOptionPane.showMessageDialog(null, "No book in cart!!");
 			return false;
 		}
 		
@@ -86,19 +84,17 @@ public class BorrowBookHandler {
 			return false;
 		}
 		
-		//validasi gaboleh buku yg lagi dipinjem
 		List<Book> books = new ArrayList<Book>(getCart());
-		
 		for (Book book : books) {
+			//check is still borrowing
 			boolean cek = new Borrow().isBookStillBorrowing(User.getId(), book.getId());
 			if(cek == true) {
-				//print error message
 				JOptionPane.showMessageDialog(null, "Can't borrow the same book!!");
 				return false;
 			}
 		}
 		
-		//masukin ke borrow 
+		//insert to borrow
 		Borrow borrow = new Borrow();
 		String borrowId = UUID.randomUUID().toString();
 		borrow.setId(borrowId);
@@ -122,6 +118,5 @@ public class BorrowBookHandler {
 		}
 		
 		return true;
-		
 	}
 }
