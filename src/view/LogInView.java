@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -51,6 +52,7 @@ public class LogInView extends JFrame implements ActionListener {
 		lblUsername.setBounds(110, 120, 100, 40);
 		lblUsername.setFont(new Font("Times New Roman", Font.BOLD, 20));
 		getContentPane().add(lblUsername);
+		
 		lblPassword = new JLabel("Password :");
 		lblPassword.setBounds(110, 200, 100, 40);
 		lblPassword.setFont(new Font("Times New Roman", Font.BOLD, 20));
@@ -87,25 +89,22 @@ public class LogInView extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		
 		if(e.getSource() == logInButton) {
+			
 			username = txtUsername.getText();
 			password = String.valueOf(txtPassword.getPassword());
 			UserHandler userH = new UserHandler();
-			user = userH.getByUsername(username); //Ini cek Username sama Password nya sesuai apa ngga
-			System.out.println("User username:" + user.getUsername());
+			user = userH.getByUsername(username); 
+			
 			if(user.getUsername() == null) {
-				//print username salah
-				System.out.println("username salah");
+				JOptionPane.showMessageDialog(null, "Invalid Username!");
 				return;
 			}else if(user.getPassword().equals(password) == false) {
-				//print password salah
-				System.out.println("Login pass:" + password);
-				System.out.println("User pass:" + user.getPassword());
-				System.out.println("password salah");
+				JOptionPane.showMessageDialog(null, "Invalid Password!");
 				return;
 			}
-			//Harusnya disini ada kondisi kalo ga sesuai
-			//Ini kondisi kalo sesuai
+			
 			this.dispose();
 			
 			RoleHandler roleH = new RoleHandler();

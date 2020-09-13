@@ -212,8 +212,6 @@ public class BorrowHistoryForm extends JInternalFrame implements ActionListener 
 	    
 	    Syear = new JSpinner(new SpinnerNumberModel(2020, 1, 9999, 1));
 	    
-	    
-	    
 		Object[] message = {
 				"Filter History at : ", tit,
 				"Month", Smonth,

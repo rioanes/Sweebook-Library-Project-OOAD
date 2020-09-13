@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 
 import util.*;
 import java.util.*;
@@ -67,6 +66,9 @@ public class Borrow {
 		this.borrowTimestamp = borrowTimestamp;
 	}
 	
+	
+	//function
+	
 	public Borrow find(String id) {
 		Connection connection = Connect.connect();
 		PreparedStatement statement = null;
@@ -74,7 +76,7 @@ public class Borrow {
 		try {
 			statement = connection.prepareStatement(findIdString);
 			statement.setString(1, id);
-			ResultSet rs = statement.executeQuery(); //gtw butuh kasi findString ato ga
+			ResultSet rs = statement.executeQuery(); 
 			
 			if(rs.next()) {				
 				borrow.setId(rs.getString(1));
@@ -159,7 +161,6 @@ public class Borrow {
 			ResultSet rs = statement.executeQuery(); 
 			
 			while(rs.next()) {
-				System.out.println("in is borrow");
 				count = rs.getInt("total");
 			}
 			
@@ -193,9 +194,7 @@ public class Borrow {
 			ResultSet rs = statement.executeQuery(); 
 			
 			while(rs.next()) {
-				System.out.println("in count");
 				count = rs.getInt("total");
-				System.out.println("count book still borrowing " + rs.getInt("total"));
 			}
 				
 		}catch (SQLException ex) {
@@ -212,7 +211,6 @@ public class Borrow {
 	}
 	
 	public List<Borrow> getPendingStatus(boolean isOnlyCurrentMember) {
-		//isOnlyCurrentMember = where member_id = User.id
 		String query = "SELECT * FROM `borrows` "
 				+ "WHERE `status` = 'pending' ";
 		Connection connection = Connect.connect();
@@ -261,12 +259,9 @@ public class Borrow {
 		
 		List<Borrow> borrows = new ArrayList<Borrow>();
 		try {
-//			int year = Integer.parseInt(new SimpleDateFormat("yyyy").format(date));
-//			int month =Integer.parseInt(new SimpleDateFormat("MM").format(date));
-			
 			int year = date.getYear();
 			int month = date.getMonth();
-			System.out.println("year = " + year + " month = " + month);
+			
 			if(isOnlyCurrentMember) {
 				
 				query += "AND member_id = ?";

@@ -8,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-import controller.*;
-import model.*;
 
 
 public class Member {
@@ -19,6 +17,8 @@ public class Member {
 	
 	final String insertString = "INSERT INTO members (user_id,address,member_since) VALUES (?, ?, ?);";
 	final String selectString = "SELECT * FROM members ORDER BY user_id DESC;";
+	
+	//constructor 
 	
 	public Member() {
 		super();
@@ -31,6 +31,9 @@ public class Member {
 		this.address = address;
 		this.memberSince = memberSince;
 	}
+	
+	//getter setter 
+	
 	public String getId() {
 		return id;
 	}
@@ -50,6 +53,8 @@ public class Member {
 		this.memberSince = memberSince;
 	}
 	
+	//function
+	
 	public List<Member> all(){
 		Connection connection = Connect.connect();
 		List<Member> members = new ArrayList<Member>();
@@ -62,8 +67,7 @@ public class Member {
 				member.setId(rs.getString(1));
 				member.setAddress(rs.getString(2));
 				member.setMemberSince(rs.getString(3));
-				
-				
+					
 				members.add(member);
 			}
 		}catch (SQLException ex) {

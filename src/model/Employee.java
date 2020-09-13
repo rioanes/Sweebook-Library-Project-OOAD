@@ -8,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-import controller.*;
-import model.*;
 
 public class Employee {
 	private String id;
@@ -21,6 +19,7 @@ public class Employee {
     final String selectString = "SELECT * FROM employees ORDER BY user_id DESC;";
     final String findIdString = "SELECT * FROM employees WHERE user_id=? ;";
     
+    //constructor
 	public Employee() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -32,6 +31,8 @@ public class Employee {
 		this.salary = salary;
 		this.status = status;
 	}
+	
+	//getter setter
 	
 	public String getId() {
 		return id;
@@ -51,6 +52,8 @@ public class Employee {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	//function
 	
 	public List<Employee> all(){
 		Connection connection = Connect.connect();
@@ -81,7 +84,7 @@ public class Employee {
 		try {
 			statement = connection.prepareStatement(findIdString);
 			statement.setString(1, id);
-			ResultSet rs = statement.executeQuery(); //gtw butuh kasi findString ato ga
+			ResultSet rs = statement.executeQuery(); 
 			
 			while(rs.next()) {
 				emp.setId(rs.getString(1));

@@ -8,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-import controller.*;
-import model.*;
 
 
 public class Role {
@@ -19,6 +17,7 @@ public class Role {
 	final String selectString = "SELECT * FROM roles ORDER BY id DESC;";
     final String findIdString = "SELECT * FROM roles WHERE name=? ;";
 	
+    //constructor
 	public Role() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -28,6 +27,9 @@ public class Role {
 		this.id = id;
 		this.name = name;
 	}
+	
+	//getter setter
+	
 	public String getId() {
 		return id;
 	}
@@ -40,6 +42,8 @@ public class Role {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	// function 
 	
 	public List<Role> all(){
 		Connection connection = Connect.connect();
@@ -66,15 +70,12 @@ public class Role {
 		PreparedStatement statement = null;
 		Role role = new Role();
 		try {
-			System.out.println("role.getbyname()");
 			statement = connection.prepareStatement(findIdString);
 			statement.setString(1, name);
-			ResultSet rs = statement.executeQuery(); //gtw butuh kasi findString ato ga
+			ResultSet rs = statement.executeQuery(); 
 			while(rs.next()) {
 				role.setId(rs.getString(1));
 				role.setName(rs.getString(2));		
-				
-				System.out.println(role.getId() + " " + role.getName());
 			}
 			
 				

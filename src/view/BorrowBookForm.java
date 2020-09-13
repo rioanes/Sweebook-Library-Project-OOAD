@@ -168,13 +168,13 @@ public class BorrowBookForm extends JInternalFrame implements ActionListener {
 					JOptionPane.showMessageDialog(null, "Choose Book You Want Add to Cart!");
 					return;
 				}
-				else {
-					if(bbh.addToCart(bookList.get(index)) ) {						
-						JOptionPane.showMessageDialog(null, "Add to cart success");
-						refreshCartTable();
-						refreshBookTable();
-					}
+				
+				if(bbh.addToCart(bookList.get(index)) ) {						
+					JOptionPane.showMessageDialog(null, "Add to cart success");
+					refreshCartTable();
+					refreshBookTable();
 				}
+				
 		 }else if(e.getSource() == removeCart) {
 			 int index = tableCart.getSelectedRow();
 				if(index == -1) {

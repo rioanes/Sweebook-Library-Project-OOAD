@@ -208,7 +208,8 @@ public class AddEmployeeForm extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Salary must be greater than 10000!!");
 				return;
 			}
-
+			
+			//create hashmap to store employee data
 			HashMap<String, String> inputs = new HashMap<String, String>();
 			inputs.put("name", name);
 			inputs.put("roleId", role);

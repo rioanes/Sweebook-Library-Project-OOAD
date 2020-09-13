@@ -7,8 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import controller.*;
-import model.*;
 
 public class BorrowItem {
 	private String id;
@@ -19,6 +17,7 @@ public class BorrowItem {
     final String updateString = "UPDATE borrow_items SET return_timestamp=? WHERE borrow_id=? AND book_id = ?;";
     final String findBookString = "SELECT * FROM borrow_items WHERE borrow_id=? AND book_id = ?;";
     final String getBookItemString = "SELECT * FROM borrow_items WHERE borrow_id=? ;";
+    
 	//constructor
 	public BorrowItem() {
 		super();
@@ -51,6 +50,7 @@ public class BorrowItem {
 		this.returnTimestamp = returnTimestamp;
 	}
 	
+	//function
 	
 	public BorrowItem insert() {
 		Connection connection = Connect.connect();
@@ -85,7 +85,6 @@ public class BorrowItem {
 			statement.setString(3, this.bookId);
 		
 			statement.executeUpdate();
-			System.out.println("borrow Item updated");
 				
 		}catch (SQLException ex) {
 			ex.printStackTrace();
@@ -146,7 +145,6 @@ public class BorrowItem {
 				BorrowItem  item = new BorrowItem();
 				item.setId(rs.getString(1));
 				item.setBookId(rs.getString(2));
-				//cek bisa di convert ke string ato ngga
 				item.setReturnTimestamp(rs.getString(3));
 				
 				items.add(item);

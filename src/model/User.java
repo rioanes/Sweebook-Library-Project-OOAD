@@ -5,9 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
 import controller.*;
-import model.*;
 
 
 public class User {
@@ -20,6 +18,8 @@ public class User {
 	
 	final String insertString = "INSERT INTO users (id,role_id, name, username, password, gender) VALUES (?, ?, ?, ?, ?, ?);";
 	final String findIdString = "SELECT * FROM users WHERE username=? ;";
+	
+	//constructor
 	
 	public User() {
 		super();
@@ -35,6 +35,8 @@ public class User {
 		this.gender = gender;
 	}
 	
+	//getter setter
+	
 	public static String getId() {
 		return id;
 	}
@@ -47,7 +49,6 @@ public class User {
 	public static void setRoleId(String roleId) {
 		User.roleId = roleId;
 	}
-	
 	public String getName() {
 		return name;
 	}
@@ -72,6 +73,8 @@ public class User {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
+	
+	//function
 	
 	public static boolean isRoleMember() {
 		String membershipId = new RoleHandler().getByName("Membership").getId();
@@ -129,9 +132,9 @@ public class User {
 		
 		try {
 			statement = connection.prepareStatement(findIdString);
-			System.out.println("lalala: " + username);
+			
 			statement.setString(1, username);
-			ResultSet rs = statement.executeQuery(); //gtw butuh kasi findString ato ga
+			ResultSet rs = statement.executeQuery(); 
 			while(rs.next()) {
 				User.setId(rs.getString(1));
 				User.setRoleId(rs.getString(2));
@@ -139,11 +142,9 @@ public class User {
 				user.setUsername(rs.getString(4));
 				user.setPassword(rs.getString(5));
 				user.setGender(rs.getString(6));
-				System.out.println(user.getPassword() + "== pass");
 			}
 		}catch (SQLException ex) {
 			ex.printStackTrace();
-			System.out.println("error");
 			return null;
 		} finally {
 			try {

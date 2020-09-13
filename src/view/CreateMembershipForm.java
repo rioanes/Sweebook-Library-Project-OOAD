@@ -20,7 +20,8 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 	
 	MemberHandler member = new MemberHandler();
 	
-	JButton backButton;
+	JButton backButton, create;
+	ButtonGroup group;
 	
 	public CreateMembershipForm() {
 		setTitle("Register Form");
@@ -47,7 +48,7 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 		lblGender.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		//grouping
-		ButtonGroup group = new ButtonGroup();
+		group = new ButtonGroup();
 		JRadioButton rbMale = new JRadioButton("Male");
 		rbMale.setActionCommand("Male");
 		JRadioButton rbFemale = new JRadioButton("Female");
@@ -82,49 +83,11 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 		backButton.addActionListener(this);
 		
 		//create
-		JButton create = new JButton("create");
+		create = new JButton("create");
 		create.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		create.setBounds(320, 300, 100, 40);
 		getContentPane().add(create);
-		create.addActionListener(new ActionListener() {	
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				String name = txtName.getText();
-				String userName = txtUserName.getText();
-				
-				String gender = group.getSelection().getActionCommand();
-				
-				String address = txtAddress.getText();
-				String pass = txtPassword.getText();
-				String confPass = txtConfirmPassword.getText();
-				
-				System.out.println(gender);
-				
-				
-				if(name.length()<1 || userName.length()<1 || address.length()<1
-						|| pass.length()<1 || confPass.length()<1
-						|| gender == null) {
-					JOptionPane.showMessageDialog(null, "please complete data");
-					return;
-				}
-				else if(!(pass.equals(confPass))) {
-					System.out.println(pass);
-					System.out.println(confPass);
-					JOptionPane.showMessageDialog(null, "Please input the same password");
-					return;
-				}
-				HashMap<String,String> inputs = new HashMap<String,String>();
-				inputs.put("name", name);
-				inputs.put("username", userName);
-				inputs.put("gender", gender);
-				inputs.put("address", address);
-				inputs.put("password", pass);
-				System.out.println("sblm");
-				member.createMembership(inputs);
-				
-			}
-		});
+		create.addActionListener(this);
 		
 		JPanel pnlGender = new JPanel(new GridLayout(1,2));
 		pnlGender.add(rbMale);
@@ -165,6 +128,35 @@ public class CreateMembershipForm extends JFrame implements ActionListener{
 		// TODO Auto-generated method stub
 		if(e.getSource() == backButton) {
 			goBack();
+		}else if(e.getSource() == create) {
+
+			String name = txtName.getText();
+			String userName = txtUserName.getText();
+			
+			String gender = group.getSelection().getActionCommand();
+			
+			String address = txtAddress.getText();
+			String pass = txtPassword.getText();
+			String confPass = txtConfirmPassword.getText();
+			
+			if(name.length()<1 || userName.length()<1 || address.length()<1
+					|| pass.length()<1 || confPass.length()<1
+					|| gender == null) {
+				JOptionPane.showMessageDialog(null, "please complete data");
+				return;
+			}
+			else if(!(pass.equals(confPass))) {
+				JOptionPane.showMessageDialog(null, "Please input the same password");
+				return;
+			}
+			HashMap<String,String> inputs = new HashMap<String,String>();
+			inputs.put("name", name);
+			inputs.put("username", userName);
+			inputs.put("gender", gender);
+			inputs.put("address", address);
+			inputs.put("password", pass);
+			member.createMembership(inputs);
+			
 		}
 	}
 }

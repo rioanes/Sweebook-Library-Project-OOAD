@@ -8,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-import controller.*;
-import model.*;
 
 public class Genre {
 	private String id;
@@ -20,6 +18,8 @@ public class Genre {
 	final String findbyTypeString = "SELECT * FROM genres WHERE type=? ;";
 	final String findbyIdString = "SELECT * FROM genres WHERE id=? ;";
 	
+	//constructor 
+	
 	public Genre() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -29,6 +29,9 @@ public class Genre {
 		this.id = id;
 		this.type = type;
 	}
+	
+	//getter setter 
+	
 	public String getId() {
 		return id;
 	}
@@ -41,6 +44,8 @@ public class Genre {
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	//function 
 	
 	public List<Genre> all(){
 		Connection connection = Connect.connect();
@@ -70,7 +75,6 @@ public class Genre {
 			statement = connection.prepareStatement(insertString);
 			statement.setString(1, this.id);
 			statement.setString(2, this.type);
-			
 			
 			statement.executeUpdate();
 				

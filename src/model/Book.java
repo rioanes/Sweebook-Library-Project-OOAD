@@ -203,7 +203,7 @@ public class Book {
 		try {
 			statement = connection.prepareStatement(findIsbnString);
 			statement.setString(1, isbn);
-			ResultSet rs = statement.executeQuery(); //gtw butuh kasi findString ato ga
+			ResultSet rs = statement.executeQuery(); 
 			
 			if(rs.next()) {
 				book1.setId(rs.getString(1));
